@@ -11,7 +11,7 @@ class ResponseTest {
             val response: Response<Int> = ok()
             val response2: Response<Int> = error("Default error message")
 
-            response.isSuccess() && response2.isFailure()
+            response.status is Ok && response2.status is Error
         }
     }
 

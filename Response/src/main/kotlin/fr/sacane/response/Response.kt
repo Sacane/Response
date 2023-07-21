@@ -4,8 +4,6 @@ class Response<E> internal constructor(
     private val value: E? = null,
     val status: Status
 ) {
-    fun isSuccess(): Boolean = status is Ok
-    fun isFailure(): Boolean = status is Error
     fun hasValue(): Boolean = value != null
 
     fun orElse(defaultValue: E?): E? = when(status) {
