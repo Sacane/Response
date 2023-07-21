@@ -1,29 +1,29 @@
 package fr.sacane.response
 
 sealed interface Status {
-    fun isSuccess(): Boolean
-    fun isFailure(): Boolean
+    fun isSuccess(): Boolean = when(this) {
+        is Ok -> true
+        is Error -> false
+    }
+    fun isFailure(): Boolean = when(this) {
+        is Ok -> false
+        is Error -> true
+    }
 }
 
-internal fun Status.check(){
-    if(isSuccess() == isFailure()) throw IllegalStateException("Status should not be able to be both success and failure")
+private fun Status.check() {
+    if(!isSuccess() && !isFailure()) {
+        throw IllegalStateException("Status should return true for isSuccess or isFailure")
+    }
 }
 
-open class Ok: Status{
+open class Ok: Status {
     init {
         check()
     }
-    private fun check(){
-        if(isSuccess() == isFailure()) throw IllegalStateException("Status should not be able to be both success and failure")
-    }
-    override fun isSuccess(): Boolean = true
-    override fun isFailure(): Boolean = false
 }
-
-open class Error(val message: String): Status{
+open class Error(val message: String): Status {
     init {
         check()
     }
-    override fun isSuccess(): Boolean = false
-    override fun isFailure(): Boolean = true
 }
