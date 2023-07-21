@@ -17,7 +17,7 @@ class StatusTest {
 
     @Test
     fun `Custom status should not return same boolean value isSuccess and isFailure`(){
-        assertThrows<IllegalArgumentException> { FakeCustomStatus() }
+        assertThrows<IllegalStateException> { FakeCustomStatus() }
     }
 
     @Test
