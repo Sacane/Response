@@ -4,6 +4,15 @@ class Response<E> internal constructor(
     private val value: E? = null,
     val status: Status
 ) {
+
+    init {
+        require(status is Ok && value != null ||
+                status is Error && value == null ||
+                status is EmptyOk && value == null
+        ) {
+            "Response value should be null when status is Error or EmptyOk and not null when status is Ok"
+        }
+    }
     fun hasValue(): Boolean = value != null
 
     fun orElse(defaultValue: E?): E? = when(status) {
