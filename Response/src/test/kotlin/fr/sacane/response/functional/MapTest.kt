@@ -2,10 +2,10 @@ package fr.sacane.response.functional
 
 import fr.sacane.response.Error
 import fr.sacane.response.Ok
-import fr.sacane.response.ok
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import fr.sacane.response.error
+import fr.sacane.response.factory.error
+import fr.sacane.response.factory.ok
 import org.junit.jupiter.api.assertThrows
 
 class MapTest {

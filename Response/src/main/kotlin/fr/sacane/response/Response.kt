@@ -35,8 +35,3 @@ class Response<E> internal constructor(
         return result + status.hashCode()
     }
 }
-
-fun <E> ok(value: E): Response<E> = Response(value, Ok())
-fun ok(): Response<Nothing> = Response(null, EmptyOk())
-
-fun <E> error(message: String): Response<E> = Response(null, Error(message))
