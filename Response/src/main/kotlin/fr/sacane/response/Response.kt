@@ -4,13 +4,13 @@ class Response<E> internal constructor(
     private val value: E? = null,
     private val status: Status
 ) {
-    fun isSuccess(): Boolean = status.isSuccess()
-    fun isFailure(): Boolean = status.isFailure()
+    fun isSuccess(): Boolean = status is Ok
+    fun isFailure(): Boolean = status is Error
     fun hasValue(): Boolean = value != null
 
-    fun orElse(defaultValue: E?): E? = when(status.isSuccess()) {
-        true -> value ?: defaultValue
-        false -> defaultValue
+    fun orElse(defaultValue: E?): E? = when(status) {
+        is Ok -> value ?: defaultValue
+        is Error -> defaultValue
     }
     fun message(): String = when(status) {
         is Error -> status.message
@@ -23,7 +23,7 @@ class Response<E> internal constructor(
     }
 
     override fun hashCode(): Int {
-        var result = value?.hashCode() ?: 0
+        val result = value?.hashCode() ?: 0
         return result + status.hashCode()
     }
 }
