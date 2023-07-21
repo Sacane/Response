@@ -8,7 +8,7 @@ class Response<E> internal constructor(
 
     fun orElse(defaultValue: E?): E? = when(status) {
         is EmptyOk -> defaultValue
-        is Ok -> value ?: defaultValue
+        is Ok -> value!!
         is Error -> defaultValue
     }
     fun message(): String = when(status) {
