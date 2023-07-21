@@ -8,11 +8,24 @@ class Response<E> internal constructor(
     fun isFailure(): Boolean = status.isFailure()
     fun hasValue(): Boolean = value != null
 
-    fun orElse(defaultValue: E): E = when(status.isSuccess()) {
-        true -> value!!
+    fun orElse(defaultValue: E?): E? = when(status.isSuccess()) {
+        true -> value ?: defaultValue
         false -> defaultValue
     }
-    fun message(): String = status.message ?: "No specific message for this status"
+    fun message(): String = when(status) {
+        is Error -> status.message
+        is Ok -> "No specific message for this status"
+    }
+
+    override fun equals(other: Any?): Boolean = when(other) {
+        is Response<*> -> other.value == value && other.status == status
+        else -> false
+    }
+
+    override fun hashCode(): Int {
+        var result = value?.hashCode() ?: 0
+        return result + status.hashCode()
+    }
 }
 
 fun <E> ok(value: E): Response<E> = Response(value, Ok())

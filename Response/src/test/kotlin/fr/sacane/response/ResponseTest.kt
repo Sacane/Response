@@ -18,9 +18,7 @@ class ResponseTest {
     @Test
     fun `Response should return value when it has one`(){
         val response: Response<Int> = ok(1)
-        assertTrue {
-            response.hasValue()
-        }
+        assertTrue (response.hasValue())
     }
 
     @Test

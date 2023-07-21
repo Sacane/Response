@@ -1,26 +1,29 @@
 package fr.sacane.response
 
-abstract class Status(val message: String? = null) {
-    init {
-        checkStatusConstraints()
-    }
-    private fun checkStatusConstraints() {
-        if (isSuccess() == isFailure()) {
-            throw IllegalArgumentException("isSuccess should return a different value than isFailure")
-        }
-        if(isFailure() && message == null) throw IllegalArgumentException("Error status should be instanced with a message")
-
-    }
-    abstract fun isSuccess(): Boolean
-    abstract fun isFailure(): Boolean
+sealed interface Status {
+    fun isSuccess(): Boolean
+    fun isFailure(): Boolean
 }
 
-class Ok: Status(){
+internal fun Status.check(){
+    if(isSuccess() == isFailure()) throw IllegalStateException("Status should not be able to be both success and failure")
+}
+
+open class Ok: Status{
+    init {
+        check()
+    }
+    private fun check(){
+        if(isSuccess() == isFailure()) throw IllegalStateException("Status should not be able to be both success and failure")
+    }
     override fun isSuccess(): Boolean = true
     override fun isFailure(): Boolean = false
 }
 
-class Error(message: String?): Status(message){
+open class Error(val message: String): Status{
+    init {
+        check()
+    }
     override fun isSuccess(): Boolean = false
     override fun isFailure(): Boolean = true
 }

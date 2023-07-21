@@ -6,11 +6,11 @@ import org.junit.jupiter.api.assertThrows
 
 class StatusTest {
 
-    internal class FakeCustomStatus: Status() {
+    internal class FakeCustomStatus: Ok() {
         override fun isSuccess(): Boolean  = false
         override fun isFailure(): Boolean = false
     }
-    internal class GoodCustomStatus: Status() {
+    internal class GoodCustomStatus: Ok() {
         override fun isSuccess(): Boolean  = true
         override fun isFailure(): Boolean = false
     }
