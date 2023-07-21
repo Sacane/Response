@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="64af6c85-43f2-447b-9411-e7bb664b8d09" name="Changes" comment="Remove function in their right package" />
+    <list default="true" id="64af6c85-43f2-447b-9411-e7bb664b8d09" name="Changes" comment="Remove function in their right package">
+      <change beforePath="$PROJECT_DIR$/Response/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/Response/.gitignore" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -233,7 +235,7 @@
       <workItem from="1689923987884" duration="5587000" />
       <workItem from="1689929680717" duration="300000" />
       <workItem from="1689930010121" duration="90000" />
-      <workItem from="1689930122910" duration="1003000" />
+      <workItem from="1689930122910" duration="1194000" />
     </task>
     <task id="LOCAL-00001" summary="[FEAT] - add gradle for root project + split Error and Ok status into interface and open class instead of abstract class">
       <option name="closed" value="true" />
