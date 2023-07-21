@@ -1,6 +1,11 @@
 package fr.sacane.response
 
 sealed interface Status {
+    val symbol: String
+        get() = when(this) {
+            is Ok -> "OK"
+            is Error -> "ERROR"
+        }
     fun isSuccess(): Boolean = when(this) {
         is Ok -> true
         is Error -> false
@@ -25,5 +30,9 @@ open class Ok: Status {
 open class Error(val message: String): Status {
     init {
         check()
+    }
+
+    override fun toString(): String {
+        return "$symbol(message='$message')"
     }
 }

@@ -2,7 +2,7 @@ package fr.sacane.response
 
 class Response<E> internal constructor(
     private val value: E? = null,
-    private val status: Status
+    val status: Status
 ) {
     fun isSuccess(): Boolean = status is Ok
     fun isFailure(): Boolean = status is Error
