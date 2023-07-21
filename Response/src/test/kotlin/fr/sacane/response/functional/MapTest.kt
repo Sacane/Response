@@ -6,12 +6,20 @@ import fr.sacane.response.ok
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import fr.sacane.response.error
+import org.junit.jupiter.api.assertThrows
 
 class MapTest {
 
     @Test
+    fun `Ok response but empty should not be able to map`() {
+        assertThrows<UnsupportedOperationException> {
+            ok().map { "it.toString()" }
+        }
+    }
+
+    @Test
     fun `Map function should transform correctly when status is ok`(){
-        val response = ok<Int>().mapIfPresent({ it.toString() }, "2")
+        val response = ok(2).map { it.toString() }
 
         assertTrue (
             response.status is Ok &&
@@ -22,7 +30,7 @@ class MapTest {
 
     @Test
     fun `Map function should not transform when status is error`(){
-        val response = error<Int>("error").mapIfPresent({ "2" }, "2")
+        val response = error<Int>("error").map{ "2" }
         assertTrue (
             response.status is Error &&
             !response.hasValue() &&

@@ -36,3 +36,5 @@ open class Error(val message: String): Status {
         return "$symbol(message='$message')"
     }
 }
+
+open class EmptyOk: Ok()

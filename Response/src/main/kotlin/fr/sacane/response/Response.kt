@@ -7,6 +7,7 @@ class Response<E> internal constructor(
     fun hasValue(): Boolean = value != null
 
     fun orElse(defaultValue: E?): E? = when(status) {
+        is EmptyOk -> defaultValue
         is Ok -> value ?: defaultValue
         is Error -> defaultValue
     }
@@ -27,6 +28,6 @@ class Response<E> internal constructor(
 }
 
 fun <E> ok(value: E): Response<E> = Response(value, Ok())
-fun <E> ok(): Response<E> = Response(null, Ok())
+fun ok(): Response<Nothing> = Response(null, EmptyOk())
 
 fun <E> error(message: String): Response<E> = Response(null, Error(message))

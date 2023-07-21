@@ -1,11 +1,8 @@
 package fr.sacane.response.functional
-import fr.sacane.response.Error
-import fr.sacane.response.Ok
-import fr.sacane.response.Response
-import fr.sacane.response.ok
-import fr.sacane.response.error
+import fr.sacane.response.*
 
-fun <T, R> Response<out T>.mapIfPresent(transform: (T) -> R, defaultValueOnSuccess: R): Response<out R> = when (this.status) {
-    is Ok -> if(hasValue()) ok(transform(this.orElse(null)!!)) else ok(defaultValueOnSuccess)
+fun <T, R> Response<out T>.map(transform: (T) -> R): Response<out R> = when (this.status) {
+    is EmptyOk -> throw UnsupportedOperationException("Cannot map an empty response")
+    is Ok -> ok(transform(this.orElse(null)!!))
     is Error -> error(this.message())
 }
