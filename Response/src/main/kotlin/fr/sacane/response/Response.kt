@@ -6,9 +6,8 @@ class Response<E> internal constructor(
 ) {
 
     init {
-        require(status is Ok && value != null ||
-                status is Error && value == null ||
-                status is EmptyOk && value == null
+        require(
+            ((status is EmptyOk || status is Error) && value == null) || (status is Ok && value != null )
         ) {
             "Response value should be null when status is Error or EmptyOk and not null when status is Ok"
         }
