@@ -14,13 +14,13 @@ class MapTest {
     @Test
     fun `Map function should return null with null entry`(){
         assertThrows<NullPointerException> {
-            ok<Int>().map { null }
+            ok<Int>().mapIfPresent { null }
         }
     }
 
     @Test
     fun `Map function should transform correctly when status is ok`(){
-        val response = ok(1).map { it.toString() }
+        val response = ok(1).mapIfPresent { it.toString() }
 
         assertTrue (
             response.status is Ok &&
@@ -31,7 +31,7 @@ class MapTest {
 
     @Test
     fun `Map function should not transform when status is error`(){
-        val response: Response<Int> = error<Int>("error").map { 5 }
+        val response: Response<Int> = error<Int>("error").mapIfPresent { 5 }
 
         assertTrue (
             response.status is Error &&
