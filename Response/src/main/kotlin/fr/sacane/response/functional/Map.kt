@@ -1,6 +1,6 @@
 package fr.sacane.response.functional
 import fr.sacane.response.*
-import fr.sacane.response.factory.ok
+import ok
 
 fun <T, R> Response<out T>.map(transform: (T) -> R): Response<out R> = when (this.status) {
     is EmptyOk -> throw UnsupportedOperationException("Cannot map an empty response")

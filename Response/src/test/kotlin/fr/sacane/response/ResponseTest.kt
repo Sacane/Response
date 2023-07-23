@@ -1,6 +1,6 @@
 package fr.sacane.response
 
-import fr.sacane.response.factory.ok
+import ok;
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import fr.sacane.response.factory.error

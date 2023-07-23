@@ -5,7 +5,7 @@ import fr.sacane.response.Ok
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import fr.sacane.response.factory.error
-import fr.sacane.response.factory.ok
+import ok;
 import org.junit.jupiter.api.assertThrows
 
 class MapTest {
