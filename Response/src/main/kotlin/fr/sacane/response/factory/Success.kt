@@ -1,3 +1,5 @@
+package fr.sacane.response.factory
+
 import fr.sacane.response.Ok
 import fr.sacane.response.Response
 

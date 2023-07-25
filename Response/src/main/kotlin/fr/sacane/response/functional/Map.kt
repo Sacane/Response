@@ -1,6 +1,6 @@
 package fr.sacane.response.functional
 import fr.sacane.response.*
-import ok
+import fr.sacane.response.factory.ok
 
 fun <T, R> Response<out T>.map(transform: (T) -> R): Response<out R>{
     if(status is Ok && value == null) {
