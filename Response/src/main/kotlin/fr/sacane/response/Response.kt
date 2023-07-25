@@ -1,7 +1,7 @@
 package fr.sacane.response
 
 class Response<E> constructor(
-    private val value: E? = null,
+    internal val value: E? = null,
     val status: Status
 ) {
 

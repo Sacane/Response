@@ -32,4 +32,11 @@ class ResponseTest {
             response.orElse(2) == 1 && response2.orElse(2) == 2
         }
     }
+
+    
+
+    private fun divide(divider: Int, dividend: Int): Response<Int> {
+        if(dividend == 0) return error("Cannot divide by zero")
+        return ok(divider / dividend)
+    }
 }
