@@ -4,6 +4,7 @@ import ok;
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import fr.sacane.response.factory.error
+import fr.sacane.response.functional.orElse
 
 class ResponseTest {
 

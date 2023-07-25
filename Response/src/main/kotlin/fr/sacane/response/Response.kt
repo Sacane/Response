@@ -7,17 +7,14 @@ class Response<E> constructor(
 
     init {
         require(
-            ((status is EmptyOk || status is Error) && value == null) || (status is Ok && value != null )
+            (status is Error && value == null) || (status is Ok )
         ) {
-            "Response value should be null when status is Error or EmptyOk and not null when status is Ok"
+            "Response value should be null when status is Error"
         }
     }
     fun hasValue(): Boolean = value != null
 
-    fun orElse(defaultValue: E?): E? = when(status) {
-        is EmptyOk, is Error -> defaultValue
-        is Ok -> value!!
-    }
+
     fun message(): String = when(status) {
         is Error -> status.message
         is Ok -> "No specific message for this status"
