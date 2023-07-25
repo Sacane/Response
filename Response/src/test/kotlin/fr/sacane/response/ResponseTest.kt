@@ -30,11 +30,21 @@ class ResponseTest {
             val response: Response<Int> = ok(1)
             val response2: Response<Int> = error("Default error message")
 
-            response.orElse(2) == 1 && response2.orElse(2) == 2
+            response.value == 1 && response2.value == null
         }
     }
-
-    
+    @Test
+    fun `If response is error then its value should be null`(){
+        val divideResult = 3 divideBy 0
+        assertTrue(
+            divideResult.status is Error &&
+            divideResult.value == null
+        )
+    }
+    private infix fun Int.divideBy(other: Int): Response<Int> = when(this){
+        0 -> error("Cannot divide by zero")
+        else -> ok(this/other)
+    }
 
     private fun divide(divider: Int, dividend: Int): Response<Int> {
         if(dividend == 0) return error("Cannot divide by zero")
