@@ -7,13 +7,9 @@ sealed interface Status {
             is Error -> "ERROR"
         }
 }
-
-
 open class Ok: Status
 open class Error(val message: String): Status {
     override fun toString(): String {
         return "$symbol(message='$message')"
     }
 }
-
-open class EmptyOk: Ok()
