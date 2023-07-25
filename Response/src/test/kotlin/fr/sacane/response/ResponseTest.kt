@@ -4,7 +4,6 @@ import fr.sacane.response.factory.ok;
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import fr.sacane.response.factory.error
-import fr.sacane.response.functional.orElse
 
 class ResponseTest {
 
@@ -41,13 +40,8 @@ class ResponseTest {
             divideResult.value == null
         )
     }
-    private infix fun Int.divideBy(other: Int): Response<Int> = when(this){
+    private infix fun Int.divideBy(other: Int): Response<Int> = when(other){
         0 -> error("Cannot divide by zero")
         else -> ok(this/other)
-    }
-
-    private fun divide(divider: Int, dividend: Int): Response<Int> {
-        if(dividend == 0) return error("Cannot divide by zero")
-        return ok(divider / dividend)
     }
 }
