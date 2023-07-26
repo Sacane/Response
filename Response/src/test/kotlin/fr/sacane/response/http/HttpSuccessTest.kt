@@ -6,7 +6,26 @@ import org.junit.jupiter.api.Test
 class HttpSuccessTest {
 
     @Test
-    fun `response with created status has 201 as response code`(){
+    fun `Ok response should return 200 as status code and return body`() {
+        assertTrue {
+            val response = httpOk("response body")
+            val checkBody = response.value == "response body" && response.status is HttpOk
+            val status = response.status as HttpOk
+            checkBody && status.code == 200
+        }
+    }
+
+    @Test
+    fun `Ok response empty should has null value test`() {
+        assertTrue {
+            val response = httpOk()
+            val status = response.status as HttpOk
+            status.code == 200
+        }
+    }
+
+    @Test
+    fun `Response with created status has 201 as response code`(){
         assertTrue {
             val response = created()
             val status = response.status
