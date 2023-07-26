@@ -2,6 +2,7 @@ package fr.sacane.response.functional
 
 import fr.sacane.response.Error
 import fr.sacane.response.Ok
+import fr.sacane.response.divideBy
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import fr.sacane.response.factory.error
@@ -23,7 +24,6 @@ class MapTest {
         val response = ok("value").map { it.uppercase(Locale.getDefault()) }
         assertTrue (
             response.status is Ok &&
-            response.hasValue() &&
             response.value == "VALUE"
         )
     }
@@ -34,6 +34,17 @@ class MapTest {
         assertTrue (
             response.status is Error &&
             response.value == null
+        )
+    }
+
+    @Test
+    fun `Simple flatmap test        `() {
+        val response = (20 divideBy  2).flatMap {
+            it divideBy 2
+        }
+        assertTrue(
+            response.status is Ok &&
+            response.value == 5
         )
     }
 }

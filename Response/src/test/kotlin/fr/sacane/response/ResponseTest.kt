@@ -20,7 +20,7 @@ class ResponseTest {
     @Test
     fun `Response should return value when it has one`(){
         val response: Response<Int> = ok(1)
-        assertTrue (response.hasValue())
+        assertTrue (response.value == 1)
     }
 
     @Test
@@ -39,9 +39,5 @@ class ResponseTest {
             divideResult.status is Error &&
             divideResult.value == null
         )
-    }
-    private infix fun Int.divideBy(other: Int): Response<Int> = when(other){
-        0 -> error("Cannot divide by zero")
-        else -> ok(this/other)
     }
 }
