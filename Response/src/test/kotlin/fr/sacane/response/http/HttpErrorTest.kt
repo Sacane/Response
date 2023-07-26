@@ -11,7 +11,7 @@ class HttpErrorTest {
     fun `HttpError Response should be created with a message and a code`() {
         val response = notFound<String>("Not found")
         assertTrue {
-            val status = response.status as HttpError
+            val status = response.status
             status is NotFound            &&
             status.message == "Not found" &&
             status.code == 404

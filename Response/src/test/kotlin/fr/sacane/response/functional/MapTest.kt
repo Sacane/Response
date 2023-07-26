@@ -38,7 +38,7 @@ class MapTest {
     }
 
     @Test
-    fun `Simple flatmap test        `() {
+    fun `Simple flatmap test`() {
         val response = (20 divideBy  2).flatMap {
             it divideBy 2
         }
