@@ -9,7 +9,7 @@ import fr.sacane.response.Response
  *
  * This method is equivalent to the flatMap method.
  */
-fun <V, E> Response<V>.andThen(transform: (V) -> Response<E>): Response<E> {
+infix fun <V, E> Response<V>.andThen(transform: (V) -> Response<E>): Response<E> {
     return flatMap(transform)
 }
 

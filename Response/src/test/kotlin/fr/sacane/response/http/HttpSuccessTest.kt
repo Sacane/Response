@@ -10,8 +10,7 @@ class HttpSuccessTest {
         assertTrue {
             val response = httpOk("response body")
             val checkBody = response.value == "response body" && response.status is HttpOk
-            val status = response.status as HttpOk
-            checkBody && status.code == 200
+            response.status is HttpOk && (response.status as HttpOk).code == 200
         }
     }
 

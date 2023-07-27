@@ -2,6 +2,7 @@ package fr.sacane.response.http
 
 import fr.sacane.response.Failure
 import fr.sacane.response.Response
+import fr.sacane.response.functional.andThen
 import fr.sacane.response.functional.map
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -12,6 +13,9 @@ class HttpErrorTest {
     data class Customer(val id: String, val name: String)
 
     class FakeRepository {
+
+        private val list: MutableList<Customer> = mutableListOf()
+
         fun findById(id: String): Response<Customer> {
             if(id == ""){
                 return notFound("The id is empty")
@@ -21,6 +25,26 @@ class HttpErrorTest {
             }
             return httpOk(Customer(UUID.randomUUID().toString(), "John Doe"))
         }
+
+        fun save(customer: Customer){
+            list.add(customer)
+        }
+    }
+
+    private fun searchAll(firstId: String, secondId: String, thirdId: String): Response<Customer>{
+        val repository = FakeRepository()
+        return repository.findById(firstId).andThen {
+            repository.findById(secondId)
+        } .andThen {
+            repository.findById(thirdId)
+        }
+    }
+
+    @Test
+    fun `andThen method can be propagated`() {
+        val response = searchAll("BB-10", "BB-12", "BB-23")
+
+        assertTrue(response.status is HttpOk)
     }
 
     @Test
@@ -40,6 +64,7 @@ class HttpErrorTest {
         val mappedResponse = response.map { 10 }
         assertTrue {
             val status = response.status as HttpError
+            response.status is HttpError
             status is NotFound              &&
             status.message == "Not found"   &&
             status.code == 404              &&
