@@ -4,6 +4,7 @@ import fr.sacane.response.factory.ok;
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import fr.sacane.response.factory.failure
+import fr.sacane.response.functional.orElse
 
 class ResponseTest {
 
@@ -29,7 +30,7 @@ class ResponseTest {
             val response: Response<Int> = ok(1)
             val response2: Response<Int> = failure("Default error message")
 
-            response.value == 1 && response2.value == null
+            response.orElse(2) == 1 && response2.orElse(3) == 3
         }
     }
     @Test

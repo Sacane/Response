@@ -9,12 +9,12 @@ import org.junit.jupiter.api.Test
 
 class OnTest {
 
-    class Wrap(var value: Int)
+    class Wrapper(var value: Int)
 
     @Test
     fun `Simple on success test`(){
-        val wrapper = Wrap(10)
-        val response : Response<Int> = (10 divideBy 2)
+        val wrapper = Wrapper(10)
+        val response : Response<Int> = 10 divideBy 2
 
         response.onSuccess {
             wrapper.value += it

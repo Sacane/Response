@@ -3,10 +3,9 @@ package fr.sacane.response.http
 import fr.sacane.response.Ok
 import fr.sacane.response.Response
 
-private const val createdSymbol = "HTTP_CREATED"
 sealed class HttpSuccess (val code: Int): Ok() {
     override val symbol: String
-        get() = createdSymbol
+        get() = "SUCCESS"
 }
 
 class HttpOk: HttpSuccess(200)
@@ -19,3 +18,4 @@ fun <E> created(url: String, value: E) = Response(value, Created(url))
 
 fun <E> httpOk(body: E): Response<E> = Response(body, HttpOk())
 fun httpOk(): Response<Nothing> = Response(null, HttpOk())
+

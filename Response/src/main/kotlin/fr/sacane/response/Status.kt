@@ -8,7 +8,7 @@ sealed interface Status {
         }
 }
 open class Ok: Status
-open class Failure(val message: String): Status {
+open class Failure(internal val message: String): Status {
     override fun toString(): String {
         return "$symbol(message='$message')"
     }
