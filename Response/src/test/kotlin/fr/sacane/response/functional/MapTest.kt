@@ -5,7 +5,7 @@ import fr.sacane.response.Ok
 import fr.sacane.response.divideBy
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import fr.sacane.response.factory.error
+import fr.sacane.response.factory.failure
 import fr.sacane.response.factory.ok;
 import org.junit.jupiter.api.assertThrows
 import java.util.*
@@ -30,7 +30,7 @@ class MapTest {
 
     @Test
     fun `Map function should not transform when status is error`(){
-        val response = error<Int>("error").map{ "2" }
+        val response = failure<Int>("error").map{ "2" }
         assertTrue (
             response.status is Failure &&
             response.value == null

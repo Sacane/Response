@@ -3,7 +3,7 @@ package fr.sacane.response
 import fr.sacane.response.factory.ok;
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import fr.sacane.response.factory.error
+import fr.sacane.response.factory.failure
 
 class ResponseTest {
 
@@ -11,7 +11,7 @@ class ResponseTest {
     fun `Response should return success when it is and failure when its not`(){
         assertTrue {
             val response= ok()
-            val response2: Response<Int> = error("Default error message")
+            val response2: Response<Int> = failure("Default error message")
 
             response.status is Ok && response2.status is Failure
         }
@@ -27,7 +27,7 @@ class ResponseTest {
     fun `Or else method should return the value when its success`(){
         assertTrue {
             val response: Response<Int> = ok(1)
-            val response2: Response<Int> = error("Default error message")
+            val response2: Response<Int> = failure("Default error message")
 
             response.value == 1 && response2.value == null
         }

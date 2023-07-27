@@ -18,3 +18,8 @@ fun <E> Response<E>.and(result: Response<E>): Response<E> = when(this.status) {
     is Ok -> result
     is Failure -> this
 }
+
+fun <E> Response<E>.and(resultSupplier: () -> Response<E>): Response<E> = when(this.status){
+    is Ok -> resultSupplier()
+    is Failure -> this
+}
