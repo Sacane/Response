@@ -4,16 +4,16 @@ import fr.sacane.response.Failure
 import fr.sacane.response.Ok
 import fr.sacane.response.Response
 
-fun <E> Response<E>.onSuccess(action: () -> Unit): Response<E>{
-    if(this.status is Ok){
-        action()
+fun <E> Response<E>.onSuccess(action: (E) -> Unit): Response<E>{
+    if(this.status is Ok && this.value != null){
+        action(this.value)
     }
     return this
 }
 
-fun <E> Response<E>.onFailure(action: () -> Unit): Response<E> {
+fun <E> Response<E>.onFailure(action: (String) -> Unit): Response<E> {
     if(this.status is Failure) {
-        action()
+        action(this.status.message)
     }
     return this
 }
