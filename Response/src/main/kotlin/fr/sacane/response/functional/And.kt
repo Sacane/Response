@@ -1,5 +1,7 @@
 package fr.sacane.response.functional
 
+import fr.sacane.response.Failure
+import fr.sacane.response.Ok
 import fr.sacane.response.Response
 
 /**
@@ -9,4 +11,10 @@ import fr.sacane.response.Response
  */
 fun <V, E> Response<V>.andThen(transform: (V) -> Response<E>): Response<E> {
     return flatMap(transform)
+}
+
+
+fun <E> Response<E>.and(result: Response<E>): Response<E> = when(this.status) {
+    is Ok -> result
+    is Failure -> this
 }
