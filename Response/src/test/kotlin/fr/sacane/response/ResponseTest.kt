@@ -13,7 +13,7 @@ class ResponseTest {
             val response= ok()
             val response2: Response<Int> = error("Default error message")
 
-            response.status is Ok && response2.status is Error
+            response.status is Ok && response2.status is Failure
         }
     }
 
@@ -36,7 +36,7 @@ class ResponseTest {
     fun `If response is error then its value should be null`(){
         val divideResult = 3 divideBy 0
         assertTrue(
-            divideResult.status is Error &&
+            divideResult.status is Failure &&
             divideResult.value == null
         )
     }

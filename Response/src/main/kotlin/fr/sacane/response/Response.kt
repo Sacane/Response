@@ -14,7 +14,7 @@ constructor(
 ) {
     init {
         require(
-            (status is Error && value == null) || (status is Ok )
+            (status is Failure && value == null) || (status is Ok )
         ) {
             "Response value should be null when status is Error"
         }

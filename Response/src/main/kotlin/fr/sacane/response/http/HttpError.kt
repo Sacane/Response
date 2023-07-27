@@ -1,9 +1,9 @@
 package fr.sacane.response.http
 
-import fr.sacane.response.Error
+import fr.sacane.response.Failure
 import fr.sacane.response.Response
 
-sealed class HttpError (message: String, val code: Int): Error(message) {
+sealed class HttpError (message: String, val code: Int): Failure(message) {
     override val symbol: String
         get() = "HTTP_ERROR"
 }

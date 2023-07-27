@@ -1,6 +1,6 @@
 package fr.sacane.response.http
 
-import fr.sacane.response.Error
+import fr.sacane.response.Failure
 import fr.sacane.response.Response
 import fr.sacane.response.functional.map
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -43,7 +43,7 @@ class HttpErrorTest {
             status is NotFound              &&
             status.message == "Not found"   &&
             status.code == 404              &&
-            mappedResponse.status is Error
+            mappedResponse.status is Failure
         }
     }
 
@@ -51,9 +51,9 @@ class HttpErrorTest {
     fun `Simple Valuable response test`() {
         val repository = FakeRepository()
         assertTrue {
-            repository.findById("").status is NotFound &&
-                    repository.findById("BUAUH").status is Unauthorized &&
-                    repository.findById("BB-10291").status is HttpOk
+            repository.findById("").status is NotFound          &&
+            repository.findById("BUAUH").status is Unauthorized &&
+            repository.findById("BB-10291").status is HttpOk
         }
     }
 }

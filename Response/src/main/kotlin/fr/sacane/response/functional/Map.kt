@@ -3,7 +3,7 @@ import fr.sacane.response.*
 import fr.sacane.response.factory.ok
 
 private fun <T> Response<T>.validateMapping(): Boolean =
-    (status is Ok && value != null) || status is Error
+    (status is Ok && value != null) || status is Failure
 
 fun <T, R> Response<out T>.map(transform: (T) -> R): Response<out R>{
     if(status is Ok && value == null) {
@@ -11,7 +11,7 @@ fun <T, R> Response<out T>.map(transform: (T) -> R): Response<out R>{
     }
     return when (this.status) {
         is Ok -> ok(transform(this.value!!))
-        is Error -> Response(null, this.status)
+        is Failure -> Response(null, this.status)
     }
 }
 
@@ -22,7 +22,7 @@ fun <T, R> Response<out T>.map(transform: (T) -> R): Response<out R>{
 inline infix fun <T, R> Response<T>.mapEmpty(transform: () -> R): Response<R> {
     return when(this.status) {
         is Ok -> ok(transform())
-        is Error -> Response(null, this.status)
+        is Failure -> Response(null, this.status)
     }
 }
 
@@ -37,6 +37,6 @@ fun <V, E> Response<V>.flatMap(transform: (V) -> Response<E>): Response<E> {
     }
     return when(this    .status) {
         is Ok -> transform(value!!)
-        is Error -> Response(null, this.status)
+        is Failure -> Response(null, this.status)
     }
 }
