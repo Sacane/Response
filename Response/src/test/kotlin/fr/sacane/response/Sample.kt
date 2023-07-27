@@ -4,7 +4,7 @@ import fr.sacane.response.factory.failure
 import fr.sacane.response.factory.ok
 
 internal infix fun Int.divideBy(other: Int): Response<Int> = when(other){
-    0 -> fr.sacane.response.factory.failure("Cannot divide by zero")
+    0 -> failure("Cannot divide by zero")
     else -> ok(this/other)
 }
 
