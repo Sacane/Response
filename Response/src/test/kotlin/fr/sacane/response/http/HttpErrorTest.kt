@@ -16,7 +16,7 @@ class HttpErrorTest {
 
         private val list: MutableList<Customer> = mutableListOf()
 
-        fun findById(id: String): Response<Customer> {
+        fun findById(id: String): Response<Customer, HttpStatus> {
             if(id == ""){
                 return notFound("The id is empty")
             }
@@ -31,7 +31,7 @@ class HttpErrorTest {
         }
     }
 
-    private fun searchAll(firstId: String, secondId: String, thirdId: String): Response<Customer>{
+    private fun searchAll(firstId: String, secondId: String, thirdId: String): Response<Customer, HttpStatus>{
         val repository = FakeRepository()
         return repository.findById(firstId).andThen {
             repository.findById(secondId)
@@ -43,18 +43,16 @@ class HttpErrorTest {
     @Test
     fun `andThen method can be propagated`() {
         val response = searchAll("BB-10", "BB-12", "BB-23")
-
-        assertTrue(response.status is HttpOk)
+        assertTrue(response.status.isOk)
     }
 
     @Test
     fun `HttpError Response should be created with a message and a code`() {
-        val response = notFound<String>("Not found")
+        val response: Response<String, HttpStatus> = notFound("Not found")
         assertTrue {
             val status = response.status
-            status is NotFound            &&
-            status.message == "Not found" &&
-            status.code == 404
+            status.code == 404 &&
+                    status.message == "Not found"
         }
     }
 
@@ -63,12 +61,12 @@ class HttpErrorTest {
         val response = notFound<String>("Not found")
         val mappedResponse = response.map { 10 }
         assertTrue {
-            val status = response.status as HttpError
-            response.status is HttpError
+            val status = response.status
+            response.status.isFailure
             status is NotFound              &&
             status.message == "Not found"   &&
             status.code == 404              &&
-            mappedResponse.status is Failure
+            mappedResponse.status.isFailure
         }
     }
 
@@ -80,5 +78,20 @@ class HttpErrorTest {
             repository.findById("BUAUH").status is Unauthorized &&
             repository.findById("BB-10291").status is HttpOk
         }
+    }
+
+    fun <E> mapping(response: Response<E, HttpStatus>) {
+        when (response.status) {
+            is NotFound -> println("not found")
+            is Forbidden -> println("forbidden")
+            is HttpError -> println("internal servor error")
+            is HttpOk -> println("Found ok response ${response.value}")
+            else -> println("Not an http response")
+        }
+    }
+
+    @Test
+    fun test(){
+        mapping(FakeRepository().findById("BB-2RZ"))
     }
 }

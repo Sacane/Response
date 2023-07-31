@@ -1,5 +1,8 @@
 package fr.sacane.response.http
 
+import fr.sacane.response.Failure
+import fr.sacane.response.Ok
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
@@ -29,5 +32,11 @@ class HttpSuccessTest {
             val status = response.status
             status is Created && status.code == 201
         }
+    }
+
+    @Test
+    fun `simple test`() {
+        val http = notFound<Int>("Number not found")
+        assertTrue(http.status is NotFound)
     }
 }

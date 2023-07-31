@@ -1,27 +1,23 @@
 package fr.sacane.response.functional
 
-import fr.sacane.response.Failure
-import fr.sacane.response.Ok
-import fr.sacane.response.Response
+import fr.sacane.response.*
+import fr.sacane.response.status.DefaultStatus
 
 /**
  * Apply the transform function for this response.
  *
  * This method is equivalent to the flatMap method.
  */
-infix fun <V, E> Response<V>.andThen(
-    transform: (V) -> Response<E>
-): Response<E> = flatMap(transform)
+infix fun <V, E, S: DefaultStatus> Response<V, S>.andThen(
+    transform: (V) -> Response<E, S>
+): Response<E, S> = flatMap(transform)
 
 
 
-fun <E> Response<E>.and(
-    result: Response<E>
-): Response<E> = when(this.status) {
-    is Ok -> result
-    is Failure -> this
-}
+fun <E, T: DefaultStatus> Response<E, T>.and(
+    result: Response<E, T>
+): Response<E, T> = if(this.status.isOk) result else this
 
-inline infix fun <E> Response<E>.and(
-    actionResponse: () -> Response<E>
-): Response<E> = and(actionResponse())
+ fun <E, S: DefaultStatus> Response<E, S>.and(
+    actionResponse: () -> Response<E, S>
+): Response<E, S> = and(actionResponse())
