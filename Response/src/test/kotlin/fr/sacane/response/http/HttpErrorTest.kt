@@ -1,20 +1,58 @@
 package fr.sacane.response.http
 
-import fr.sacane.response.Error
+import fr.sacane.response.Failure
+import fr.sacane.response.Response
+import fr.sacane.response.functional.andThen
 import fr.sacane.response.functional.map
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import java.util.*
 
 class HttpErrorTest {
 
+    data class Customer(val id: String, val name: String)
+
+    class FakeRepository {
+
+        private val list: MutableList<Customer> = mutableListOf()
+
+        fun findById(id: String): Response<Customer, HttpStatus> {
+            if(id == ""){
+                return notFound("The id is empty")
+            }
+            if(!id.startsWith("BB-")){
+                return unauthorized("The id is in the wrong format")
+            }
+            return httpOk(Customer(UUID.randomUUID().toString(), "John Doe"))
+        }
+
+        fun save(customer: Customer){
+            list.add(customer)
+        }
+    }
+
+    private fun searchAll(firstId: String, secondId: String, thirdId: String): Response<Customer, HttpStatus>{
+        val repository = FakeRepository()
+        return repository.findById(firstId).andThen {
+            repository.findById(secondId)
+        } .andThen {
+            repository.findById(thirdId)
+        }
+    }
+
+    @Test
+    fun `andThen method can be propagated`() {
+        val response = searchAll("BB-10", "BB-12", "BB-23")
+        assertTrue(response.status.isOk)
+    }
+
     @Test
     fun `HttpError Response should be created with a message and a code`() {
-        val response = notFound<String>("Not found")
+        val response: Response<String, HttpStatus> = notFound("Not found")
         assertTrue {
-            val status = response.status as HttpError
-            status is NotFound            &&
-            status.message == "Not found" &&
-            status.code == 404
+            val status = response.status
+            status.code == 404 &&
+                    status.message == "Not found"
         }
     }
 
@@ -23,11 +61,37 @@ class HttpErrorTest {
         val response = notFound<String>("Not found")
         val mappedResponse = response.map { 10 }
         assertTrue {
-            val status = response.status as HttpError
+            val status = response.status
+            response.status.isFailure
             status is NotFound              &&
             status.message == "Not found"   &&
             status.code == 404              &&
-            mappedResponse.status is Error
+            mappedResponse.status.isFailure
         }
+    }
+
+    @Test
+    fun `Simple Valuable response test`() {
+        val repository = FakeRepository()
+        assertTrue {
+            repository.findById("").status is NotFound          &&
+            repository.findById("BUAUH").status is Unauthorized &&
+            repository.findById("BB-10291").status is HttpOk
+        }
+    }
+
+    fun <E> mapping(response: Response<E, HttpStatus>) {
+        when (response.status) {
+            is NotFound -> println("not found")
+            is Forbidden -> println("forbidden")
+            is HttpError -> println("internal servor error")
+            is HttpOk -> println("Found ok response ${response.value}")
+            else -> println("Not an http response")
+        }
+    }
+
+    @Test
+    fun test(){
+        mapping(FakeRepository().findById("BB-2RZ"))
     }
 }

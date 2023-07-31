@@ -1,16 +1,35 @@
 package fr.sacane.response.http
 
-import fr.sacane.response.Ok
 import fr.sacane.response.Response
+import fr.sacane.response.status.DefaultStatus
 
-private const val createdSymbol = "HTTP_CREATED"
-sealed class HttpSuccess (val code: Int): Ok() {
-    override val symbol: String
-        get() = createdSymbol
+sealed interface HttpStatus: DefaultStatus {
+    val code: Int
 }
 
-class Created (val url: String): HttpSuccess(201)
+sealed class HttpSuccess (override val code: Int): HttpStatus{
+    override val message: String?
+        get() = null
+}
 
-fun created() = Response(null, Created(""))
-fun created(url: String) = Response(null, Created(url))
-fun <E> created(url: String, value: E) = Response(value, Created(url))
+class HttpOk: HttpSuccess(200) {
+    override val isOk: Boolean
+        get() = true
+    override val isFailure: Boolean
+        get() = false
+}
+
+class Created (val url: String): HttpSuccess(201) {
+    override val isOk: Boolean
+        get() = true
+    override val isFailure: Boolean
+        get() = false
+}
+
+fun created(): Response<Nothing, HttpStatus> = Response(null, Created(""))
+fun created(url: String): Response<Nothing, HttpStatus> = Response(null, Created(url))
+fun <E> created(url: String, value: E): Response<E, HttpStatus> = Response(value, Created(url))
+
+fun <E> httpOk(body: E): Response<E, HttpStatus> = Response(body, HttpOk())
+fun httpOk(): Response<Nothing, HttpStatus> = Response(null, HttpOk())
+
