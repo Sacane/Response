@@ -1,14 +1,14 @@
 package fr.sacane.response.functional
 
-import fr.sacane.response.Failure
-import fr.sacane.response.Ok
+import fr.sacane.response.*
 import fr.sacane.response.divideBy
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import fr.sacane.response.factory.failure
 import fr.sacane.response.factory.ok;
+import fr.sacane.response.status.DefaultStatus
 import org.junit.jupiter.api.assertThrows
-import java.util.*
+
 
 class MapTest {
 
@@ -21,10 +21,10 @@ class MapTest {
 
     @Test
     fun `Map function should transform correctly when status is ok`(){
-        val response = ok("value").map { it.uppercase(Locale.getDefault()) }
+        val response: Response<Int, DefaultStatus> = ok("value").map { 2 }
         assertTrue (
-            response.status is Ok &&
-            response.value == "VALUE"
+            response.status.isOk &&
+            response.value == 2
         )
     }
 

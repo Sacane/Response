@@ -1,42 +1,33 @@
 package fr.sacane.response.functional
 import fr.sacane.response.*
-import fr.sacane.response.factory.ok
+import fr.sacane.response.status.DefaultStatus
 
-private fun <T> Response<T>.validateMapping(): Boolean =
-    (status is Ok && value != null) || status is Failure
+private fun <T, E: DefaultStatus> Response<T, E>.validateMapping(): Boolean =
+    (status.isOk && value != null) || status.isFailure
 
-fun <T, R> Response<out T>.map(transform: (T) -> R): Response<out R>{
-    if(status is Ok && value == null) {
+fun <T, R, E: DefaultStatus> Response<T, E>.map(transform: (T) -> R): Response<R, E>{
+    if(status.isOk && value == null) {
         throw UnsupportedOperationException("Cannot map an empty response")
     }
-    return when (this.status) {
-        is Ok -> ok(transform(this.value!!))
-        is Failure -> Response(null, this.status)
-    }
+    return if(this.status.isOk) Response(transform(this.value!!), this.status) else Response(null, this.status)
 }
 
 /**
  * Map this Response to another response using the transform function if this response is ok, or
  * propagate the Error response.
  */
-inline infix fun <T, R> Response<T>.mapEmpty(transform: () -> R): Response<R> {
-    return when(this.status) {
-        is Ok -> ok(transform())
-        is Failure -> Response(null, this.status)
-    }
-}
+inline infix fun <T, R, S: DefaultStatus> Response<T, S>.mapEmpty(transform: () -> R): Response<R, S> =
+    if(this.status.isOk) Response(transform(), this.status) else Response(null, this.status)
+
 
 
 /**
  * Map this [Response<V>] to [Response<E>] by applying the [transform]
  * function
  */
-fun <V, E> Response<V>.flatMap(transform: (V) -> Response<E>): Response<E> {
+fun <V, E, T: DefaultStatus> Response<V, T>.flatMap(transform: (V) -> Response<E, T>): Response<E, T> {
     check(validateMapping()){
         "Cannot map an empty Response"
     }
-    return when(this    .status) {
-        is Ok -> transform(value!!)
-        is Failure -> Response(null, this.status)
-    }
+    return if(this.status.isOk) transform(value!!) else Response(null, this.status)
 }

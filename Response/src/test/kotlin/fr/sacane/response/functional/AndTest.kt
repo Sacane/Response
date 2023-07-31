@@ -1,8 +1,8 @@
 package fr.sacane.response.functional
 
-import fr.sacane.response.Failure
-import fr.sacane.response.Ok
+import fr.sacane.response.*
 import fr.sacane.response.divideBy
+import fr.sacane.response.status.DefaultStatus
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -11,10 +11,9 @@ class AndTest {
 
     @Test
     fun `And method should return Failure when one of the response is Failure`() {
-        val divisionResponse = (10 divideBy 2).and(20 divideBy 0)
-        assertTrue(
-            divisionResponse.status is Failure
-        )
+        val division: Response<Int, DefaultStatus> = (10 divideBy 2).and(20 divideBy 0)
+
+        assertTrue(division.status.isFailure)
     }
 
     @Test
