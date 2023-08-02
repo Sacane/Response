@@ -7,10 +7,7 @@ import fr.sacane.response.status.DefaultStatus
  *
  *  Native are simple OK and ERROR status. Every Error status store an error message
  */
-open class Response<out E, out T: DefaultStatus>
-
-
-constructor(
+open class Response<out E, out T: DefaultStatus>(
     internal val value: E? = null,
     val status: T
 ) {

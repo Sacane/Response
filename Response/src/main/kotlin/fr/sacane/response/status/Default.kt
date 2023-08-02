@@ -1,7 +1,11 @@
 package fr.sacane.response.status
 
-interface DefaultStatus {
-    val isOk: Boolean
-    val isFailure: Boolean
-    val message: String?
+abstract class DefaultStatus(val isOk: Boolean, val isFailure: Boolean) {
+    abstract val message: String?
+
+    init {
+        require(isOk != isFailure) {
+            "status cannot be ok and failure at the same time"
+        }
+    }
 }
