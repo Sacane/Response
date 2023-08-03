@@ -6,7 +6,7 @@ import fr.sacane.response.Status
 import fr.sacane.response.status.DefaultStatus
 
 fun <E> ok(value: E): Response<E, Status> = Response(value, Ok())
-fun ok(): Response<Nothing, Status> = Response(null, Ok())
+fun ok(): Response<Nothing, Status> = Response(status= Ok())
 
 fun <E, S: DefaultStatus> ok(value: E, status: S): Response<E, S> {
     require(status.isOk){
