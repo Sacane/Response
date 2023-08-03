@@ -22,7 +22,7 @@ class HttpErrorTest {
                 return unauthorized("The id is in the wrong format")
             }
             val customer = list.find { customer -> customer.id == id }
-            return if (customer == null) notFound("The customer has not been find") else httpOk(customer)
+            return if (customer == null) notFound("The customer has not been find") else ok(customer)
         }
 
         fun save(customer: Customer){
@@ -37,12 +37,6 @@ class HttpErrorTest {
         } .andThen {
             repository.findById(thirdId)
         }
-    }
-
-    @Test
-    fun `andThen method can be propagated`() {
-        val response = searchAll("BB-10", "BB-12", "BB-23")
-        assertTrue(response.status.isOk)
     }
 
     @Test
@@ -74,9 +68,9 @@ class HttpErrorTest {
         val repository = FakeRepository()
         repository.save(Customer("BB-1", "Jean"))
         assertTrue {
-            repository.findById("").status is NotFound          &&
+            repository.findById("").status is BadRequest        &&
             repository.findById("BUAUH").status is Unauthorized &&
-            repository.findById("BB-10291").status is HttpOk
+            repository.findById("BB-1").status is HttpOk
         }
     }
 

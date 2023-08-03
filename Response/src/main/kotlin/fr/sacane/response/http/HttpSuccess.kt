@@ -22,6 +22,6 @@ fun created(): Response<Nothing, HttpStatus> = Response(null, Created(""))
 fun created(url: String): Response<Nothing, HttpStatus> = Response(null, Created(url))
 fun <E> created(url: String, value: E): Response<E, HttpStatus> = Response(value, Created(url))
 
-fun <E> httpOk(body: E): Response<E, HttpStatus> = Response(body, HttpOk())
-fun httpOk(): Response<Nothing, HttpStatus> = Response(null, HttpOk())
+fun <E> ok(body: E): Response<E, HttpStatus> = Response(body, HttpOk())
+fun ok(): Response<Nothing, HttpStatus> = Response(null, HttpOk())
 

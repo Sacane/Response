@@ -8,7 +8,7 @@ class HttpSuccessTest {
     @Test
     fun `Ok response should return 200 as status code and return body`() {
         assertTrue {
-            val response = httpOk("response body")
+            val response = ok("response body")
             response.status is HttpOk && (response.status as HttpOk).code == 200 && response.value == "response body"
         }
     }
@@ -16,7 +16,7 @@ class HttpSuccessTest {
     @Test
     fun `Ok response empty should has null value test`() {
         assertTrue {
-            val response = httpOk()
+            val response = ok()
             val status = response.status as HttpOk
             status.code == 200
         }
