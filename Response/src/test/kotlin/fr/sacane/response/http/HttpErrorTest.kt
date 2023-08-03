@@ -1,12 +1,10 @@
 package fr.sacane.response.http
 
-import fr.sacane.response.Failure
 import fr.sacane.response.Response
 import fr.sacane.response.functional.andThen
 import fr.sacane.response.functional.map
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import java.util.*
 
 class HttpErrorTest {
 
@@ -17,13 +15,14 @@ class HttpErrorTest {
         private val list: MutableList<Customer> = mutableListOf()
 
         fun findById(id: String): Response<Customer, HttpStatus> {
-            if(id == ""){
-                return notFound("The id is empty")
+            if(id.isEmpty()){
+                return badRequest("The id is empty")
             }
             if(!id.startsWith("BB-")){
                 return unauthorized("The id is in the wrong format")
             }
-            return httpOk(Customer(UUID.randomUUID().toString(), "John Doe"))
+            val customer = list.find { customer -> customer.id == id }
+            return if (customer == null) notFound("The customer has not been find") else httpOk(customer)
         }
 
         fun save(customer: Customer){
@@ -73,6 +72,7 @@ class HttpErrorTest {
     @Test
     fun `Simple Valuable response test`() {
         val repository = FakeRepository()
+        repository.save(Customer("BB-1", "Jean"))
         assertTrue {
             repository.findById("").status is NotFound          &&
             repository.findById("BUAUH").status is Unauthorized &&

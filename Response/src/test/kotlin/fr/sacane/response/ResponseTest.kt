@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test
 import fr.sacane.response.factory.failure
 import fr.sacane.response.functional.orElse
 import fr.sacane.response.status.Status
+import java.util.Random
 
 class ResponseTest {
 
@@ -42,4 +43,29 @@ class ResponseTest {
             divideResult.value == null
         )
     }
+
+    inner class RandomStatus
+    internal constructor(
+        random: Random = Random(),
+        isOk: Boolean = random.nextBoolean()
+    ): Status(
+        isOk = isOk,
+        isFailure = !isOk
+    ) {
+        override val message: String
+            get() = "is Ok -> $isOk & is Failure -> $isFailure"
+    }
+
+    @Test
+    fun `customized status implementation test`() {
+        val customized = RandomStatus()
+        val response = Response<Int, RandomStatus>(status = customized)
+
+        assertTrue(response.value == null)
+        assertTrue {
+            response.status.message == "is Ok -> ${response.status.isOk} & is Failure -> ${response.status.isFailure}"
+        }
+    }
+
+
 }
