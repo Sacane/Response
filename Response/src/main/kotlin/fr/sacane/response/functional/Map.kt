@@ -9,7 +9,7 @@ fun <T, R, E: Status> Response<T, E>.map(transform: (T) -> R): Response<R, E>{
     if(status.isOk && value == null) {
         throw UnsupportedOperationException("Cannot map an empty response")
     }
-    return if(this.status.isOk) Response(transform(this.value!!), this.status) else Response(null, this.status)
+    return if(this.status.isOk) Response(transform(this.value!!), this.status) else Response(status= this.status)
 }
 
 /**

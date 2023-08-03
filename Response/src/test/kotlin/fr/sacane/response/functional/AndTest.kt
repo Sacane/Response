@@ -22,7 +22,7 @@ class AndTest {
             (2 divideBy 2)
         }
 
-        assertTrue (response.status is Ok)
+        assertTrue (response.status is Success)
         assertEquals(1, response.value)
     }
 
@@ -32,7 +32,7 @@ class AndTest {
             .andThen { it divideBy 2 }
 
         assertTrue(
-            andThenResponse.status is Ok &&
+            andThenResponse.status is Success &&
             andThenResponse.value == 1
         )
     }

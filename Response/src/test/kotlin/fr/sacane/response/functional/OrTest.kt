@@ -15,9 +15,9 @@ class OrTest {
         val compute: Response<String, Status> = response3.or(response4)
 
         assertTrue {
-            response.status is Ok &&
+            response.status is Success &&
             response.value == build("CUSTOMER_1726").value &&
-            compute.status is Ok && compute.value == build("CUSTOMER").value
+            compute.status is Success && compute.value == build("CUSTOMER").value
         }
     }
 
