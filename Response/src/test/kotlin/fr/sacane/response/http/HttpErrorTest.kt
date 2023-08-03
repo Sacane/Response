@@ -73,19 +73,4 @@ class HttpErrorTest {
             repository.findById("BB-1").status is HttpOk
         }
     }
-
-    fun <E> mapping(response: Response<E, HttpStatus>) {
-        when (response.status) {
-            is NotFound -> println("not found")
-            is Forbidden -> println("forbidden")
-            is HttpError -> println("internal servor error")
-            is HttpOk -> println("Found ok response ${response.value}")
-            else -> println("Not an http response")
-        }
-    }
-
-    @Test
-    fun test(){
-        mapping(FakeRepository().findById("BB-2RZ"))
-    }
 }
