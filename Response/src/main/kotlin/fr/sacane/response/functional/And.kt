@@ -14,10 +14,10 @@ infix fun <V, E, S: DefaultStatus> Response<V, S>.andThen(
 
 
 
-fun <E, T: DefaultStatus> Response<E, T>.and(
+infix fun <E, T: DefaultStatus> Response<E, T>.and(
     result: Response<E, T>
 ): Response<E, T> = if(this.status.isOk) result else this
 
- fun <E, S: DefaultStatus> Response<E, S>.and(
+ infix fun <E, S: DefaultStatus> Response<E, S>.and(
     actionResponse: () -> Response<E, S>
 ): Response<E, S> = and(actionResponse())
