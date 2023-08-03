@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import fr.sacane.response.factory.failure
 import fr.sacane.response.factory.ok;
-import fr.sacane.response.status.DefaultStatus
+import fr.sacane.response.status.Status
 import org.junit.jupiter.api.assertThrows
 
 
@@ -21,7 +21,7 @@ class MapTest {
 
     @Test
     fun `Map function should transform correctly when status is ok`(){
-        val response: Response<Int, DefaultStatus> = ok("value").map { 2 }
+        val response: Response<Int, Status> = ok("value").map { 2 }
         assertTrue (
             response.status.isOk &&
             response.value == 2

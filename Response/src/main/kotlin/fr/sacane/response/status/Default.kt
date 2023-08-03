@@ -1,6 +1,6 @@
 package fr.sacane.response.status
 
-abstract class DefaultStatus(val isOk: Boolean, val isFailure: Boolean) {
+abstract class Status(val isOk: Boolean, val isFailure: Boolean) {
     abstract val message: String?
 
     init {

@@ -2,13 +2,13 @@ package fr.sacane.response.factory
 
 import fr.sacane.response.Ok
 import fr.sacane.response.Response
-import fr.sacane.response.Status
-import fr.sacane.response.status.DefaultStatus
+import fr.sacane.response.DefaultStatus
+import fr.sacane.response.status.Status
 
-fun <E> ok(value: E): Response<E, Status> = Response(value, Ok())
-fun ok(): Response<Nothing, Status> = Response(status= Ok())
+fun <E> ok(value: E): Response<E, DefaultStatus> = Response(value, Ok())
+fun ok(): Response<Nothing, DefaultStatus> = Response(status= Ok())
 
-fun <E, S: DefaultStatus> ok(value: E, status: S): Response<E, S> {
+fun <E, S: Status> ok(value: E, status: S): Response<E, S> {
     require(status.isOk){
         "Cannot build an OK Response with an status Error"
     }
