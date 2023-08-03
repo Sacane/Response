@@ -2,13 +2,7 @@ package fr.sacane.response.http
 
 import fr.sacane.response.Response
 
-sealed class HttpError (message: String, override val code: Int): HttpStatus {
-    override val isFailure: Boolean
-        get() = true
 
-    override val isOk: Boolean
-        get() = false
-}
 
 class NotFound(override val message: String): HttpError(message, 404)
 

@@ -3,28 +3,20 @@ package fr.sacane.response.http
 import fr.sacane.response.Response
 import fr.sacane.response.status.DefaultStatus
 
-sealed interface HttpStatus: DefaultStatus {
-    val code: Int
-}
+sealed class HttpStatus(isOk: Boolean, isFailure: Boolean, open val code: Int): DefaultStatus(isOk, isFailure)
 
-sealed class HttpSuccess (override val code: Int): HttpStatus{
+open class HttpSuccess (override val code: Int): HttpStatus(true, false, code){
     override val message: String?
         get() = null
 }
 
-class HttpOk: HttpSuccess(200) {
-    override val isOk: Boolean
-        get() = true
-    override val isFailure: Boolean
-        get() = false
+open class HttpError (override val message: String?, override val code: Int): HttpStatus(false, true, code) {
+
 }
 
-class Created (val url: String): HttpSuccess(201) {
-    override val isOk: Boolean
-        get() = true
-    override val isFailure: Boolean
-        get() = false
-}
+class HttpOk: HttpSuccess(200)
+
+class Created (val url: String): HttpSuccess(201)
 
 fun created(): Response<Nothing, HttpStatus> = Response(null, Created(""))
 fun created(url: String): Response<Nothing, HttpStatus> = Response(null, Created(url))

@@ -1,8 +1,5 @@
 package fr.sacane.response.http
 
-import fr.sacane.response.Failure
-import fr.sacane.response.Ok
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
@@ -12,7 +9,7 @@ class HttpSuccessTest {
     fun `Ok response should return 200 as status code and return body`() {
         assertTrue {
             val response = httpOk("response body")
-            response.status is HttpOk && (response.status as HttpOk).code == 200
+            response.status is HttpOk && (response.status as HttpOk).code == 200 && response.value == "response body"
         }
     }
 
