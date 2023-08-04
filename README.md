@@ -40,7 +40,7 @@ failedResult.message // Cannot divide by 0
 
 ## Custom Response Status
 
-As mentioned, response Status can be customized simply by extending from the `Status` type. 
+As mentioned, response Status can be customized by extending the `Status` type. 
 
 ```kotlin
 abstract class Status(val isSuccess: Boolean, val isFailure: Boolean) {
@@ -87,3 +87,6 @@ class Forbidden(override val message: String): HttpError(message, 403)
 class InternalServerError(override val message: String): HttpError(message, 500)
 ```
 
+## Monad operations 
+
+Response status can also be manipulated through methods that represents operations
