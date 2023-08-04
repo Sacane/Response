@@ -97,4 +97,14 @@ class MapTest {
         assertTrue(response.status is NotException)
         assertEquals(2, response.value)
     }
+
+
+    @Test
+    fun `If Response is Success, fold should return transform value`() {
+        val response = success("OK").fold(
+            {v -> if(v == "OK") 10 else 20},
+            {_ -> 25}
+        )
+        assertEquals(10, response)
+    }
 }
