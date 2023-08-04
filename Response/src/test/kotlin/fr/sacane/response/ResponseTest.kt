@@ -11,7 +11,7 @@ class ResponseTest {
     @Test
     fun `Response should return success when it is and failure when its not`(){
         assertTrue {
-            val response: Response<Nothing, Status> = success()
+            val response: EmptyResponse<Status> = success()
             val response2: Response<Int, DefaultStatus> = failure("Default error message")
 
             response.status is Success && response2.status is Failure
@@ -64,6 +64,4 @@ class ResponseTest {
             response.status.message == "is Ok -> ${response.status.isSuccess} & is Failure -> ${response.status.isFailure}"
         }
     }
-
-
 }
