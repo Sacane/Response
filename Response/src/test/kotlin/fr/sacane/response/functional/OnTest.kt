@@ -5,8 +5,9 @@ import fr.sacane.response.Response
 import fr.sacane.response.divideBy
 import fr.sacane.response.failure
 import fr.sacane.response.status.Status
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 class OnTest {
 
@@ -30,5 +31,14 @@ class OnTest {
 
         response.onFailure { message = it }
         assertEquals((response.status as Failure).message, message)
+    }
+
+    @Test
+    fun `Simple on Error throw test`(){
+        assertThrows<UnsupportedOperationException> {
+            failure<Int>("Computation failed")
+                .onErrorThrow(UnsupportedOperationException())
+                .map { 3 }
+        }
     }
 }

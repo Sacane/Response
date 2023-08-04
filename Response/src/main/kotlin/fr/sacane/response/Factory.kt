@@ -16,3 +16,4 @@ fun <E, S: Status> success(value: E, status: S): Response<E, S> {
 fun <E> failure(message: String): Response<E, DefaultStatus> = Response(status= Failure(message))
 
 
+typealias EmptyResponse<S> = Response<Nothing, S>
