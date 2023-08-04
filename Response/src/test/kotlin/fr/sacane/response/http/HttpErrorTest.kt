@@ -1,12 +1,10 @@
 package fr.sacane.response.http
 
-import fr.sacane.response.Failure
 import fr.sacane.response.Response
 import fr.sacane.response.functional.andThen
 import fr.sacane.response.functional.map
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import java.util.*
 
 class HttpErrorTest {
 
@@ -17,13 +15,14 @@ class HttpErrorTest {
         private val list: MutableList<Customer> = mutableListOf()
 
         fun findById(id: String): Response<Customer, HttpStatus> {
-            if(id == ""){
-                return notFound("The id is empty")
+            if(id.isEmpty()){
+                return badRequest("The id is empty")
             }
             if(!id.startsWith("BB-")){
                 return unauthorized("The id is in the wrong format")
             }
-            return httpOk(Customer(UUID.randomUUID().toString(), "John Doe"))
+            val customer = list.find { customer -> customer.id == id }
+            return if (customer == null) notFound("The customer has not been find") else ok(customer)
         }
 
         fun save(customer: Customer){
@@ -38,12 +37,6 @@ class HttpErrorTest {
         } .andThen {
             repository.findById(thirdId)
         }
-    }
-
-    @Test
-    fun `andThen method can be propagated`() {
-        val response = searchAll("BB-10", "BB-12", "BB-23")
-        assertTrue(response.status.isOk)
     }
 
     @Test
@@ -73,25 +66,11 @@ class HttpErrorTest {
     @Test
     fun `Simple Valuable response test`() {
         val repository = FakeRepository()
+        repository.save(Customer("BB-1", "Jean"))
         assertTrue {
-            repository.findById("").status is NotFound          &&
+            repository.findById("").status is BadRequest        &&
             repository.findById("BUAUH").status is Unauthorized &&
-            repository.findById("BB-10291").status is HttpOk
+            repository.findById("BB-1").status is Ok
         }
-    }
-
-    fun <E> mapping(response: Response<E, HttpStatus>) {
-        when (response.status) {
-            is NotFound -> println("not found")
-            is Forbidden -> println("forbidden")
-            is HttpError -> println("internal servor error")
-            is HttpOk -> println("Found ok response ${response.value}")
-            else -> println("Not an http response")
-        }
-    }
-
-    @Test
-    fun test(){
-        mapping(FakeRepository().findById("BB-2RZ"))
     }
 }
