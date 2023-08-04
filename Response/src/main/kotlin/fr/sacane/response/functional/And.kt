@@ -16,7 +16,7 @@ infix fun <V, E, S: Status> Response<V, S>.andThen(
 
 infix fun <E, T: Status> Response<E, T>.and(
     result: Response<E, T>
-): Response<E, T> = if(this.status.isOk) result else this
+): Response<E, T> = if(this.status.isSuccess) result else this
 
  infix fun <E, S: Status> Response<E, S>.and(
     actionResponse: () -> Response<E, S>

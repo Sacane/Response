@@ -47,11 +47,11 @@ class ResponseTest {
         random: Random = Random(),
         isOk: Boolean = random.nextBoolean()
     ): Status(
-        isOk = isOk,
+        isSuccess = isOk,
         isFailure = !isOk
     ) {
         override val message: String
-            get() = "is Ok -> $isOk & is Failure -> $isFailure"
+            get() = "is Ok -> $isSuccess & is Failure -> $isFailure"
     }
 
     @Test
@@ -61,7 +61,7 @@ class ResponseTest {
 
         assertTrue(response.value == null)
         assertTrue {
-            response.status.message == "is Ok -> ${response.status.isOk} & is Failure -> ${response.status.isFailure}"
+            response.status.message == "is Ok -> ${response.status.isSuccess} & is Failure -> ${response.status.isFailure}"
         }
     }
 

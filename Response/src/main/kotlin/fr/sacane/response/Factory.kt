@@ -6,7 +6,7 @@ fun <E> success(value: E): Response<E, DefaultStatus> = Response(value, Success(
 fun success(): Response<Nothing, DefaultStatus> = Response(status= Success())
 
 fun <E, S: Status> success(value: E, status: S): Response<E, S> {
-    require(status.isOk){
+    require(status.isSuccess){
         "Cannot build an OK Response with an status Error"
     }
     return Response(value, status)

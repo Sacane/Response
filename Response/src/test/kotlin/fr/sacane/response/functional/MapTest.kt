@@ -4,10 +4,14 @@ import fr.sacane.response.Failure
 import fr.sacane.response.Success
 import fr.sacane.response.Response
 import fr.sacane.response.divideBy
+import fr.sacane.response.exception.ExceptionStatus
+import fr.sacane.response.exception.NotException
+import fr.sacane.response.exception.ThrowableResponse
 import fr.sacane.response.failure
+import fr.sacane.response.http.*
 import fr.sacane.response.success
 import fr.sacane.response.status.Status
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
@@ -25,7 +29,7 @@ class MapTest {
     fun `Map function should transform correctly when status is ok`(){
         val response: Response<Int, Status> = success("value").map { 2 }
         assertTrue (
-            response.status.isOk &&
+            response.status.isSuccess &&
             response.value == 2
         )
     }
@@ -66,5 +70,31 @@ class MapTest {
     fun `Response Failure cannot map Empty`() {
         val failure = failure<Int>("Random failure message")
         assertTrue(failure.value == null && failure.mapEmpty { 3 } == failure)
+    }
+
+    @Test
+    fun `Simple mapping status test`() {
+        val response = success(10).mapStatus(Ok(), NotFound("Value cannot be retrieve"))
+        assertTrue(response.status.isSuccess && response.status is Ok)
+        assertEquals(10, response.value)
+    }
+
+    @Test
+    fun `Even if Response is Empty, mapStatus should be success`() {
+        val response = success().mapStatus(Ok(), NotFound("Value cannot be retrieve"))
+        assertTrue(response.status is Ok)
+        assertNull(response.value)
+    }
+
+    @Test
+    fun `If response is failure, mapStatus should respond with mapped failure`(){
+        val response: ThrowableResponse<Int> = (20 divideBy 10)
+            .mapStatus(
+                NotException(),
+                ExceptionStatus(UnsupportedOperationException())
+            )
+
+        assertTrue(response.status is NotException)
+        assertEquals(2, response.value)
     }
 }

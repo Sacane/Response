@@ -2,10 +2,16 @@ package fr.sacane.response.functional
 import fr.sacane.response.*
 import fr.sacane.response.build
 import fr.sacane.response.divideBy
+import fr.sacane.response.exception.ExceptionStatus
+import fr.sacane.response.exception.NotException
+import fr.sacane.response.exception.ThrowableResponse
+import fr.sacane.response.exception.ThrowableStatus
 import fr.sacane.response.status.Status
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
+import org.junit.jupiter.api.assertThrows
 
 class OrTest {
     @Test
@@ -44,4 +50,37 @@ class OrTest {
         }
         assertEquals(response, 15)
     }
+
+    @Test
+    fun `common OrElseThrow method should not throw when status is Success`() {
+        val response = (10 divideBy 2)
+        val value = assertDoesNotThrow { response.orElseThrow(UnsupportedOperationException()) }
+        assertTrue(value == 5)
+    }
+
+    @Test
+    fun `common OrElseThrow method should throw when status is Failure`() {
+        val response = (10 divideBy 0)
+        assertThrows<UnsupportedOperationException> {
+            response.orElseThrow(UnsupportedOperationException())
+        }
+    }
+
+    @Test
+    fun `orElseThrow should from throwableStatus response throw when Response is failure`() {
+        val response: ThrowableResponse<Int> = Response(null, ExceptionStatus(UnsupportedOperationException()))
+        assertThrows<UnsupportedOperationException> {
+            response.orElseThrow()
+        }
+    }
+
+    @Test
+    fun `orElseThrow from throwableStatus response should not throw when Response is Success`() {
+        val response: ThrowableResponse<Int> = Response(2, NotException())
+        val value = assertDoesNotThrow {
+            response.orElseThrow()
+        }
+        assertTrue(value == 2)
+    }
+
 }

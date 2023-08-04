@@ -13,7 +13,7 @@ open class Response<out E, out T: Status>(
 ) {
     init {
         require(
-            (status.isFailure && value == null) || (status.isOk )
+            (status.isFailure && value == null) || (status.isSuccess )
         ) {
             "Response value should be null when status is Error"
         }
