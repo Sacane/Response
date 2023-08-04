@@ -3,6 +3,7 @@ import fr.sacane.response.*
 import fr.sacane.response.build
 import fr.sacane.response.divideBy
 import fr.sacane.response.status.Status
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
@@ -28,5 +29,19 @@ class OrTest {
         assertTrue {
             response.status is Failure
         }
+    }
+
+    @Test
+    fun `orElseGet should retrieve the response value if its ok`() {
+        val response = (10 divideBy 2).orElseGet { 6 }
+        assertTrue(response == 5)
+    }
+
+    @Test
+    fun `orElseGet should retrieve the default value if response is Error`() {
+        val response = (10 divideBy 0).orElseGet {
+            (0..5).sum()
+        }
+        assertEquals(response, 15)
     }
 }

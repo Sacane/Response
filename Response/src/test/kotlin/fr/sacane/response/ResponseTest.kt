@@ -1,9 +1,7 @@
 package fr.sacane.response
 
-import fr.sacane.response.factory.success;
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import fr.sacane.response.factory.failure
 import fr.sacane.response.functional.orElse
 import fr.sacane.response.status.Status
 import java.util.Random

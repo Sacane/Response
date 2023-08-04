@@ -1,7 +1,5 @@
 package fr.sacane.response
 
-import fr.sacane.response.factory.failure
-import fr.sacane.response.factory.success
 import fr.sacane.response.status.Status
 
 internal infix fun Int.divideBy(other: Int): Response<Int, Status> = when(other){

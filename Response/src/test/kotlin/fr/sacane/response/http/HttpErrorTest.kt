@@ -70,7 +70,7 @@ class HttpErrorTest {
         assertTrue {
             repository.findById("").status is BadRequest        &&
             repository.findById("BUAUH").status is Unauthorized &&
-            repository.findById("BB-1").status is HttpOk
+            repository.findById("BB-1").status is Ok
         }
     }
 }
