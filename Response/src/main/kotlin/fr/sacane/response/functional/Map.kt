@@ -42,3 +42,15 @@ fun <V, E: Status, T: Status, S: T> Response<V, E>.mapStatus(successStatus: S, f
         Response(null, failureStatus)
     }
 }
+
+/**
+ * <E> Type of response's wrapped value
+ * <T> Type of the initial accumulator
+ */
+fun <E, T, S: Status> Response<E, S>.fold(
+    onSuccess: (E) -> T,
+    onFailure: (S) -> T
+): T? =
+    if(this.status.isSuccess && this.value == null) null
+    else if(this.status.isSuccess) onSuccess(value!!)
+    else onFailure(status)

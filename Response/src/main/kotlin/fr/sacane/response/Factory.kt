@@ -3,7 +3,7 @@ package fr.sacane.response
 import fr.sacane.response.status.Status
 
 fun <E> success(value: E): Response<E, DefaultStatus> = Response(value, Success())
-fun success(): Response<Nothing, DefaultStatus> = Response(status= Success())
+fun success(): EmptyResponse<DefaultStatus> = Response(status= Success())
 
 fun <E, S: Status> success(value: E, status: S): Response<E, S> {
     require(status.isSuccess){
@@ -12,7 +12,7 @@ fun <E, S: Status> success(value: E, status: S): Response<E, S> {
     return Response(value, status)
 }
 
-
 fun <E> failure(message: String): Response<E, DefaultStatus> = Response(status= Failure(message))
 
 
+typealias EmptyResponse<S> = Response<Nothing, S>
