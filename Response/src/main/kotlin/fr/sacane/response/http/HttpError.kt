@@ -1,5 +1,7 @@
 package fr.sacane.response.http
 
+open class HttpError (override val message: String?, override val code: Int): HttpStatus(false, true, code)
+
 
 class NotFound(override val message: String): HttpError(message, 404)
 
