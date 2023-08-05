@@ -5,15 +5,19 @@ import fr.sacane.response.status.Status
 private fun <T, E: Status> Response<T, E>.validateMapping(): Boolean =
     (status.isSuccess && value != null) || status.isFailure
 
+/**
+ * Map this response's value [T] to another [R].
+ */
 fun <T, R, E: Status> Response<T, E>.map(transform: (T) -> R): Response<R, E>{
     if(status.isSuccess && value == null) {
         throw UnsupportedOperationException("Cannot map an empty response")
     }
-    return if(this.status.isSuccess) Response(transform(this.value!!), this.status) else Response(status= this.status)
+    return if(this.status.isSuccess) Response(transform(this.value!!), this.status)
+    else Response(status= this.status)
 }
 
 /**
- * Map this Response to another response using the transform function if this response is ok, or
+ * Map this Response to another response using the transform function if this response without the value, or
  * propagate the Error response.
  */
 inline infix fun <T, R, S: Status> Response<T, S>.mapEmpty(transform: () -> R): Response<R, S> =
