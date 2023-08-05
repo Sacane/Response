@@ -3,6 +3,7 @@ package fr.sacane.response
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import fr.sacane.response.functional.orElse
+import fr.sacane.response.functional.orElseGet
 import fr.sacane.response.status.Status
 import java.util.Random
 
@@ -30,7 +31,7 @@ class ResponseTest {
             val response: Response<Int, DefaultStatus> = success(1)
             val response2: Response<Int, DefaultStatus> = failure("Default error message")
 
-            response.orElse(2) == 1 && response2.orElse(3) == 3
+            response.orElseGet(2) == 1 && response2.orElseGet(3) == 3
         }
     }
     @Test

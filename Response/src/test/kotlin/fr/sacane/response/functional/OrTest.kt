@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
+import java.util.NoSuchElementException
 
 class OrTest {
     @Test
@@ -69,7 +70,7 @@ class OrTest {
     @Test
     fun `orElseThrow should from throwableStatus response throw when Response is failure`() {
         val response: ThrowableResponse<Int> = Response(null, ExceptionStatus(UnsupportedOperationException()))
-        assertThrows<UnsupportedOperationException> {
+        assertThrows<NoSuchElementException> {
             response.orElseThrow()
         }
     }
@@ -81,6 +82,13 @@ class OrTest {
             response.orElseThrow()
         }
         assertTrue(value == 2)
+    }
+
+    @Test
+    fun `orElseThrow throw an exception when the value is null or failure`() {
+
+        assertThrows<NoSuchElementException> { (20 divideBy 0).orElseThrow() }
+        assertThrows<NoSuchElementException> { success().orElseThrow() }
     }
 
 }

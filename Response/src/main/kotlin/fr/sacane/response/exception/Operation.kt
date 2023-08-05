@@ -19,5 +19,10 @@ fun <E> ThrowableResponse<E>.or(other: ThrowableResponse<E>): ThrowableResponse<
     }
 }
 
-typealias ThrowableResponse<E> = Response<E, ThrowableStatus>
+fun <E> throwResponse(throwable: Throwable): ThrowableResponse<E>
+    = Response(null, ExceptionStatus(throwable))
+fun <E> notException(value: E): ThrowableResponse<E>
+    = Response(value, NotException())
 
+
+typealias ThrowableResponse<E> = Response<E, ThrowableStatus>

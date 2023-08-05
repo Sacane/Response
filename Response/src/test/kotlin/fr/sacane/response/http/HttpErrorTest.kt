@@ -1,10 +1,14 @@
 package fr.sacane.response.http
 
 import fr.sacane.response.Response
+import fr.sacane.response.exception.ThrowableResponse
+import fr.sacane.response.exception.throwResponse
 import fr.sacane.response.functional.andThen
 import fr.sacane.response.functional.map
+import fr.sacane.response.functional.throwOnFailure
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 class HttpErrorTest {
 
@@ -72,5 +76,11 @@ class HttpErrorTest {
             repository.findById("BUAUH").status is Unauthorized &&
             repository.findById("BB-1").status is Ok
         }
+    }
+
+    @Test
+    fun `throwOnError method should throw on Failure`() {
+        val response: ThrowableResponse<Int> = throwResponse(UnsupportedOperationException())
+        assertThrows<UnsupportedOperationException> { response.throwOnFailure() }
     }
 }
