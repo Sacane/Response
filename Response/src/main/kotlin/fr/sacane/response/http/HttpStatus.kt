@@ -1,6 +1,5 @@
 package fr.sacane.response.http
 
-import fr.sacane.response.EmptyResponse
 import fr.sacane.response.Response
 import fr.sacane.response.status.Status
 

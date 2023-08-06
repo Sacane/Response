@@ -74,14 +74,14 @@ class MapTest {
 
     @Test
     fun `Simple mapping status test`() {
-        val response = success(10).mapStatus(Ok(), NotFound("Value cannot be retrieve"))
+        val response = success(10).mapStatus(Ok, NotFound("Value cannot be retrieve"))
         assertTrue(response.status.isSuccess && response.status is Ok)
         assertEquals(10, response.value)
     }
 
     @Test
     fun `Even if Response is Empty, mapStatus should be success`() {
-        val response = success().mapStatus(Ok(), NotFound("Value cannot be retrieve"))
+        val response = success().mapStatus(Ok, NotFound("Value cannot be retrieve"))
         assertTrue(response.status is Ok)
         assertNull(response.value)
     }
