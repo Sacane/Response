@@ -3,6 +3,7 @@ package fr.sacane.response.functional
 import fr.sacane.response.*
 import fr.sacane.response.divideBy
 import fr.sacane.response.status.Status
+import fr.sacane.response.status.Success
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test

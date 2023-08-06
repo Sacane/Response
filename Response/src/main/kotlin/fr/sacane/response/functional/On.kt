@@ -1,8 +1,8 @@
 package fr.sacane.response.functional
 
-import fr.sacane.response.Failure
+import fr.sacane.response.status.Failure
 import fr.sacane.response.Response
-import fr.sacane.response.Success
+import fr.sacane.response.status.Success
 import fr.sacane.response.status.Status
 
 fun <E, S: Status> Response<E, S>.onSuccess(action: (E) -> Unit): Response<E, S>{

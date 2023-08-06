@@ -2,9 +2,11 @@ package fr.sacane.response
 
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import fr.sacane.response.functional.orElse
 import fr.sacane.response.functional.orElseGet
+import fr.sacane.response.status.Failure
+import fr.sacane.response.status.NativeStatus
 import fr.sacane.response.status.Status
+import fr.sacane.response.status.Success
 import java.util.Random
 
 class ResponseTest {
@@ -13,7 +15,7 @@ class ResponseTest {
     fun `Response should return success when it is and failure when its not`(){
         assertTrue {
             val response: EmptyResponse<Status> = success()
-            val response2: Response<Int, DefaultStatus> = failure("Default error message")
+            val response2: Response<Int, NativeStatus> = failure("Default error message")
 
             response.status is Success && response2.status is Failure
         }
@@ -21,15 +23,15 @@ class ResponseTest {
 
     @Test
     fun `Response should return value when it has one`(){
-        val response: Response<Int, DefaultStatus> = success(1)
+        val response: Response<Int, NativeStatus> = success(1)
         assertTrue (response.value == 1)
     }
 
     @Test
     fun `Or else method should return the value when its success`(){
         assertTrue {
-            val response: Response<Int, DefaultStatus> = success(1)
-            val response2: Response<Int, DefaultStatus> = failure("Default error message")
+            val response: Response<Int, NativeStatus> = success(1)
+            val response2: Response<Int, NativeStatus> = failure("Default error message")
 
             response.orElseGet(2) == 1 && response2.orElseGet(3) == 3
         }

@@ -5,8 +5,9 @@ import fr.sacane.response.divideBy
 import fr.sacane.response.exception.ExceptionStatus
 import fr.sacane.response.exception.NotException
 import fr.sacane.response.exception.ThrowableResponse
-import fr.sacane.response.exception.ThrowableStatus
+import fr.sacane.response.status.Failure
 import fr.sacane.response.status.Status
+import fr.sacane.response.status.Success
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
