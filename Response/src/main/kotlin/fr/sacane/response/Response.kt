@@ -3,9 +3,7 @@ package fr.sacane.response
 import fr.sacane.response.status.Status
 
 /**
- * Monad to wrap an optional value and its customizable status
- *
- *  Native are simple OK and ERROR status. Every Error status store an error message
+ * Monad to wrap an optional value and its customizable status.
  */
 open class Response<out E, out T: Status>(
     internal val value: E? = null,

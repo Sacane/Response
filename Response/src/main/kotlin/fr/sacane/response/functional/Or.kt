@@ -2,10 +2,13 @@ package fr.sacane.response.functional
 
 import fr.sacane.response.Response
 import fr.sacane.response.exception.ExceptionStatus
+import fr.sacane.response.exception.NotException
 import fr.sacane.response.exception.ThrowableResponse
 import fr.sacane.response.status.Status
 
-
+/**
+ *
+ */
 infix fun <E, S: Status> Response<E, S>.or(response: Response<E, S>): Response<E, S> =
     if(this.status.isSuccess) this else if(response.status.isSuccess) response else this
 
@@ -25,9 +28,7 @@ fun <E, S: Status> Response<E, S>.orElseThrow(throwable: Throwable)
 fun <E, S: Status> Response<E, S>.orElseThrow(): E
     = if(status.isFailure || value == null) throw NoSuchElementException() else value
 
-fun <E> ThrowableResponse<E>.throwOnFailure(): E {
-    if(this.status.isFailure || this.value == null) {
-        throw (this.status as ExceptionStatus).ex
-    }
-    return this.value
+fun <E> ThrowableResponse<E>.throwOnFailure(): E = when(this.status) {
+    is ExceptionStatus -> throw this.status.ex
+    is NotException -> value ?: throw NoSuchElementException()
 }

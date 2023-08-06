@@ -6,7 +6,7 @@ private fun <T, E: Status> Response<T, E>.validateMapping(): Boolean =
     (status.isSuccess && value != null) || status.isFailure
 
 /**
- * Apply the mapping function [transform] to the value of this response.
+ * Apply the mapping [transform] function to the value of this response.
  */
 fun <T, R, E: Status> Response<T, E>.map(transform: (T) -> R): Response<R, E>{
     if(status.isSuccess && value == null) {
@@ -17,8 +17,7 @@ fun <T, R, E: Status> Response<T, E>.map(transform: (T) -> R): Response<R, E>{
 }
 
 /**
- * Map this Response to another response using the transform function if this response without the value, or
- * propagate the Error response.
+ * Apply the [transform] function for this response without considering its value.
  */
 inline infix fun <T, R, S: Status> Response<T, S>.mapEmpty(transform: () -> R): Response<R, S> =
     if(this.status.isSuccess) Response(transform(), this.status) else Response(null, this.status)

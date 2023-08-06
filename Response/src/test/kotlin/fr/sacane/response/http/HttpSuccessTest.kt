@@ -32,7 +32,7 @@ class HttpSuccessTest {
     }
 
     @Test
-    fun `simple test`() {
+    fun `simple not found test`() {
         val http = notFound<Int>("Number not found")
         assertTrue(http.status is NotFound)
     }
