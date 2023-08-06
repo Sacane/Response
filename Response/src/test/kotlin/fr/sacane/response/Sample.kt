@@ -2,7 +2,7 @@ package fr.sacane.response
 
 import fr.sacane.response.status.Status
 
-internal infix fun Int.divideBy(other: Int): Response<Int, Status> = when(other){
+internal infix fun Int.divideBy(other: Int): Response<Int, DefaultStatus> = when(other){
     0 -> failure("Cannot divide by zero")
     else -> success(this/other)
 }

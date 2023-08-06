@@ -89,4 +89,4 @@ class InternalServerError(override val message: String): HttpError(message, 500)
 
 ## Monad operations 
 
-Response status can also be manipulated through methods that represents operations
+Response status can also be manipulated through methods that represents operations.
