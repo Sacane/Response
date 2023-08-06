@@ -9,6 +9,6 @@ open class DefaultStatus(
     override val message: String? = null
 ): Status(isOk, isFailure)
 
-open class Success: DefaultStatus(true, false)
+class Success: DefaultStatus(true, false)
 
-open class Failure(override val message: String): DefaultStatus(false, true, message)
+class Failure(override val message: String): DefaultStatus(false, true, message)
