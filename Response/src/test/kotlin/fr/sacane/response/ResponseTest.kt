@@ -1,12 +1,12 @@
 package fr.sacane.response
 
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import fr.sacane.response.functional.orElseGet
 import fr.sacane.response.status.Failure
 import fr.sacane.response.status.NativeStatus
 import fr.sacane.response.status.Status
 import fr.sacane.response.status.Success
+import org.junit.jupiter.api.Assertions.*
 import java.util.Random
 
 class ResponseTest {
@@ -24,7 +24,7 @@ class ResponseTest {
     @Test
     fun `Response should return value when it has one`(){
         val response: Response<Int, NativeStatus> = success(1)
-        assertTrue (response.value == 1)
+        assertTrue (response.value?.value == 1)
     }
 
     @Test
@@ -33,7 +33,7 @@ class ResponseTest {
             val response: Response<Int, NativeStatus> = success(1)
             val response2: Response<Int, NativeStatus> = failure("Default error message")
 
-            response.orElseGet(2) == 1 && response2.orElseGet(3) == 3
+            response.orElseGet { 2 } == 1 && response2.orElseGet{3} == 3
         }
     }
     @Test
@@ -61,12 +61,15 @@ class ResponseTest {
     fun `customized status implementation test`() {
         for(i in 0..100) {
             val customized = RandomStatus()
-            val response = Response<Int, RandomStatus>(status = customized)
+            val response = response(2, status = customized)
 
-            assertTrue(response.value == null)
-            assertTrue {
-                response.status.message == "is Ok -> ${response.status.isSuccess} & is Failure -> ${response.status.isFailure}"
+            if(response.status.isSuccess) {
+                assertNotNull(response.value)
+            } else {
+                assertNull(response.value)
             }
+            assertEquals("is Ok -> ${response.status.isSuccess} & is Failure -> ${response.status.isFailure}", response.status.message)
+
         }
     }
 }

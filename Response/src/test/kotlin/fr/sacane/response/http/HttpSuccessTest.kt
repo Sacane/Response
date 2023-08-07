@@ -9,7 +9,7 @@ class HttpSuccessTest {
     fun `Ok response should return 200 as status code and return body`() {
         assertTrue {
             val response = ok("response body")
-            response.status is Ok && (response.status as Ok).code == 200 && response.value == "response body"
+            response.status is Ok && (response.status as Ok).code == 200 && response.value?.value == "response body"
         }
     }
 

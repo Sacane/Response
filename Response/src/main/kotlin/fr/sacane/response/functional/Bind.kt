@@ -7,10 +7,10 @@ inline fun <E, S: Status> binding(crossinline block: ResponseBinding<S>.() -> E)
     val receiver = ResponseBinding<S>()
     return runCatching {
         with(receiver){
-            Response(block(), receiver.status)
+            response(block(), receiver.status)
         }
     }.getOrElse {
-        Response(null, receiver.status)
+        response(null, receiver.status)
     }
 }
 
@@ -19,7 +19,7 @@ class ResponseBinding<S: Status>{
     fun <E> Response<E, S>.bind() : E {
         this@ResponseBinding.status = this.status
         return if(this.status.isSuccess && this.value != null) {
-            this.value
+            this.value.value!!
         } else {
             throw BindingException()
         }

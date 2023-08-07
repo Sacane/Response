@@ -7,7 +7,7 @@ import fr.sacane.response.status.Status
 
 fun <E, S: Status> Response<E, S>.onSuccess(action: (E) -> Unit): Response<E, S>{
     if(this.status is Success && this.value != null){
-        action(this.value)
+        action(this.value.value!!)
     }
     return this
 }

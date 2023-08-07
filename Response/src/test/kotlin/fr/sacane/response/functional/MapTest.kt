@@ -30,7 +30,7 @@ class MapTest {
         val response: Response<Int, Status> = success("value").map { 2 }
         assertTrue (
             response.status.isSuccess &&
-            response.value == 2
+            response.value?.value == 2
         )
     }
 
@@ -50,20 +50,20 @@ class MapTest {
         }
         assertTrue(
             response.status is Success &&
-            response.value == 5
+            response.value?.value == 5
         )
     }
 
     @Test
     fun `Simple mapEmpty test`() {
         val response = (20 divideBy 2).mapEmpty { 3 }
-        assertTrue(response.value == 3)
+        assertTrue(response.value?.value == 3)
     }
 
     @Test
     fun `Response Nothing and mapEmpty can work each other`(){
         val responseNothing = success()
-        assertTrue(responseNothing.mapEmpty { 3 }.value == 3)
+        assertTrue(responseNothing.mapEmpty { 3 }.value?.value == 3)
     }
 
     @Test
@@ -76,14 +76,15 @@ class MapTest {
     fun `Simple mapping status test`() {
         val response = success(10).mapStatus(Ok, NotFound("Value cannot be retrieve"))
         assertTrue(response.status.isSuccess && response.status is Ok)
-        assertEquals(10, response.value)
+        assertEquals(10, response.value?.value)
     }
 
     @Test
     fun `Even if Response is Empty, mapStatus should be success`() {
         val response = success().mapStatus(Ok, NotFound("Value cannot be retrieve"))
         assertTrue(response.status is Ok)
-        assertNull(response.value)
+        assertNotNull(response.value)
+        assertNull(response.value!!.value)
     }
 
     @Test
@@ -95,7 +96,7 @@ class MapTest {
             )
 
         assertTrue(response.status is NotException)
-        assertEquals(2, response.value)
+        assertEquals(2, response.value?.value)
     }
 
 

@@ -5,13 +5,13 @@ import fr.sacane.response.status.Status
 /**
  * Monad to wrap an optional value and its customizable status.
  */
-open class Response<out E, out T: Status>(
-    internal val value: E? = null,
+open class Response<E, out T: Status> internal constructor(
+    internal val value: Data<E>? = null,
     val status: T
 ) {
     init {
         require(
-            (status.isFailure && value == null) || (status.isSuccess )
+            (status.isFailure && value == null) || (status.isSuccess && value != null)
         ) {
             "Response value should be null when status is Error"
         }

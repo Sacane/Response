@@ -57,7 +57,7 @@ class OrTest {
     fun `common OrElseThrow method should not throw when status is Success`() {
         val response = (10 divideBy 2)
         val value = assertDoesNotThrow { response.orElseThrow(UnsupportedOperationException()) }
-        assertTrue(value == 5)
+        assertTrue(value.value == 5)
     }
 
     @Test
@@ -78,7 +78,7 @@ class OrTest {
 
     @Test
     fun `orElseThrow from throwableStatus response should not throw when Response is Success`() {
-        val response: ThrowableResponse<Int> = Response(2, NotException())
+        val response: ThrowableResponse<Int> = response(2, NotException())
         val value = assertDoesNotThrow {
             response.orElseThrow()
         }

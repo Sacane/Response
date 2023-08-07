@@ -1,6 +1,7 @@
 package fr.sacane.response.exception
 
 import fr.sacane.response.Response
+import fr.sacane.response.response
 
 
 fun <E> ThrowableResponse<E>.and(other: ThrowableResponse<E>): ThrowableResponse<E> = when(this.status) {
@@ -22,7 +23,7 @@ fun <E> ThrowableResponse<E>.or(other: ThrowableResponse<E>): ThrowableResponse<
 fun <E> throwResponse(throwable: Throwable): ThrowableResponse<E>
     = Response(null, ExceptionStatus(throwable))
 fun <E> notException(value: E): ThrowableResponse<E>
-    = Response(value, NotException())
+    = response(value, NotException())
 
 
 typealias ThrowableResponse<E> = Response<E, ThrowableStatus>
