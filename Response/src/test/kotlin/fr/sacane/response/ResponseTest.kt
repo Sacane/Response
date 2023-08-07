@@ -59,12 +59,14 @@ class ResponseTest {
 
     @Test
     fun `customized status implementation test`() {
-        val customized = RandomStatus()
-        val response = Response<Int, RandomStatus>(status = customized)
+        for(i in 0..100) {
+            val customized = RandomStatus()
+            val response = Response<Int, RandomStatus>(status = customized)
 
-        assertTrue(response.value == null)
-        assertTrue {
-            response.status.message == "is Ok -> ${response.status.isSuccess} & is Failure -> ${response.status.isFailure}"
+            assertTrue(response.value == null)
+            assertTrue {
+                response.status.message == "is Ok -> ${response.status.isSuccess} & is Failure -> ${response.status.isFailure}"
+            }
         }
     }
 }

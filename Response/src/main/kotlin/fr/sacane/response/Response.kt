@@ -25,3 +25,5 @@ open class Response<out E, out T: Status>(
         return result + status.hashCode()
     }
 }
+
+data class Data<E>(val value: E?)
