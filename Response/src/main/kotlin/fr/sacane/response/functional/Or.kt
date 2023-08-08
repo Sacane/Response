@@ -12,11 +12,6 @@ import fr.sacane.response.status.Status
 infix fun <E, S: Status> Response<E, S>.or(response: Response<E, S>): Response<E, S> =
     if(this.status.isSuccess) this else if(response.status.isSuccess) response else this
 
-infix fun <E, S: Status> Response<E, S>.orElse(action: (S) -> Unit) {
-    if(status.isFailure) action(status)
-}
-
-
 fun <E, S: Status> Response<E, S>.orElseGet(get: () -> E): E
         = if(this.data == null) get() else data.value!!
 
