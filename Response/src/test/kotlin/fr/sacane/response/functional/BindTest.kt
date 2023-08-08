@@ -16,7 +16,7 @@ class BindTest {
             secondDivision
         }
         assertTrue(result.status is Success)
-        assertEquals(1, result.value?.value)
+        assertEquals(1, result.data?.value)
     }
 
     @Test

@@ -24,7 +24,7 @@ class ResponseTest {
     @Test
     fun `Response should return value when it has one`(){
         val response: Response<Int, NativeStatus> = success(1)
-        assertTrue (response.value?.value == 1)
+        assertTrue (response.data?.value == 1)
     }
 
     @Test
@@ -41,7 +41,7 @@ class ResponseTest {
         val divideResult = 3 divideBy 0
         assertTrue(
             divideResult.status is Failure &&
-            divideResult.value == null
+            divideResult.data == null
         )
     }
 
@@ -64,9 +64,9 @@ class ResponseTest {
             val response = response(2, status = customized)
 
             if(response.status.isSuccess) {
-                assertNotNull(response.value)
+                assertNotNull(response.data)
             } else {
-                assertNull(response.value)
+                assertNull(response.data)
             }
             assertEquals("is Ok -> ${response.status.isSuccess} & is Failure -> ${response.status.isFailure}", response.status.message)
 

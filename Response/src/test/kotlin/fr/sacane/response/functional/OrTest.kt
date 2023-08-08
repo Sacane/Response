@@ -25,8 +25,8 @@ class OrTest {
 
         assertTrue {
             response.status is Success &&
-            response.value == build("CUSTOMER_1726").value &&
-            compute.status is Success && compute.value == build("CUSTOMER").value
+            response.data == build("CUSTOMER_1726").data &&
+            compute.status is Success && compute.data == build("CUSTOMER").data
         }
     }
 

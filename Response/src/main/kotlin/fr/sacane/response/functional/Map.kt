@@ -3,16 +3,16 @@ import fr.sacane.response.*
 import fr.sacane.response.status.Status
 
 private fun <T, E: Status> Response<T, E>.validateMapping(): Boolean =
-    (status.isSuccess && value != null) || status.isFailure
+    (status.isSuccess && data != null) || status.isFailure
 
 /**
  * Apply the mapping [transform] function to the value of this response.
  */
 fun <T, R, E: Status> Response<T, E>.map(transform: (T) -> R): Response<R, E>{
-    if(status.isSuccess && value!!.value == null) {
+    if(status.isSuccess && data!!.value == null) {
         throw UnsupportedOperationException("Cannot map an empty response")
     }
-    return if(this.status.isSuccess) response(transform(this.value?.value!!), this.status)
+    return if(this.status.isSuccess) response(transform(this.data?.value!!), this.status)
     else Response(status= this.status)
 }
 
@@ -32,7 +32,7 @@ fun <V, E, T: Status> Response<V, T>.flatMap(transform: (V) -> Response<E, T>): 
     check(validateMapping()){
         "Cannot map an empty Response"
     }
-    return if(this.status.isSuccess) transform(value?.value!!) else Response(null, this.status)
+    return if(this.status.isSuccess) transform(data?.value!!) else Response(null, this.status)
 }
 
 fun <V, E: Status, T: Status, S: T> Response<V, E>.mapStatus(successStatus: S, failureStatus: S): Response<V, T> {
@@ -40,7 +40,7 @@ fun <V, E: Status, T: Status, S: T> Response<V, E>.mapStatus(successStatus: S, f
         "Success Status mapping should be OK and failure should be FAILURE"
     }
     return if(status.isSuccess) {
-        Response(this.value, successStatus)
+        Response(this.data, successStatus)
     } else {
         Response(null, failureStatus)
     }
@@ -54,6 +54,6 @@ fun <E, T, S: Status> Response<E, S>.fold(
     onSuccess: (E) -> T,
     onFailure: (S) -> T
 ): T? =
-    if(this.status.isSuccess && this.value == null) null
-    else if(this.status.isSuccess) onSuccess(value?.value!!)
+    if(this.status.isSuccess && this.data == null) null
+    else if(this.status.isSuccess) onSuccess(data?.value!!)
     else onFailure(status)

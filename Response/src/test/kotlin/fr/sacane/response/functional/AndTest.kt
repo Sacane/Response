@@ -24,7 +24,7 @@ class AndTest {
         }
 
         assertTrue (response.status is Success)
-        assertEquals(1, response.value?.value)
+        assertEquals(1, response.data?.value)
     }
 
     @Test
@@ -34,7 +34,7 @@ class AndTest {
 
         assertTrue(
             andThenResponse.status is Success &&
-            andThenResponse.value?.value == 1
+            andThenResponse.data?.value == 1
         )
     }
 }

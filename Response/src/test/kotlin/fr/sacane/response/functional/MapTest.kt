@@ -30,7 +30,7 @@ class MapTest {
         val response: Response<Int, Status> = success("value").map { 2 }
         assertTrue (
             response.status.isSuccess &&
-            response.value?.value == 2
+            response.data?.value == 2
         )
     }
 
@@ -39,7 +39,7 @@ class MapTest {
         val response = failure<Int>("error").map{ "2" }
         assertTrue (
             response.status is Failure &&
-            response.value == null
+            response.data == null
         )
     }
 
@@ -50,41 +50,41 @@ class MapTest {
         }
         assertTrue(
             response.status is Success &&
-            response.value?.value == 5
+            response.data?.value == 5
         )
     }
 
     @Test
     fun `Simple mapEmpty test`() {
         val response = (20 divideBy 2).mapEmpty { 3 }
-        assertTrue(response.value?.value == 3)
+        assertTrue(response.data?.value == 3)
     }
 
     @Test
     fun `Response Nothing and mapEmpty can work each other`(){
         val responseNothing = success()
-        assertTrue(responseNothing.mapEmpty { 3 }.value?.value == 3)
+        assertTrue(responseNothing.mapEmpty { 3 }.data?.value == 3)
     }
 
     @Test
     fun `Response Failure cannot map Empty`() {
         val failure = failure<Int>("Random failure message")
-        assertTrue(failure.value == null && failure.mapEmpty { 3 } == failure)
+        assertTrue(failure.data == null && failure.mapEmpty { 3 } == failure)
     }
 
     @Test
     fun `Simple mapping status test`() {
         val response = success(10).mapStatus(Ok, NotFound("Value cannot be retrieve"))
         assertTrue(response.status.isSuccess && response.status is Ok)
-        assertEquals(10, response.value?.value)
+        assertEquals(10, response.data?.value)
     }
 
     @Test
     fun `Even if Response is Empty, mapStatus should be success`() {
         val response = success().mapStatus(Ok, NotFound("Value cannot be retrieve"))
         assertTrue(response.status is Ok)
-        assertNotNull(response.value)
-        assertNull(response.value!!.value)
+        assertNotNull(response.data)
+        assertNull(response.data!!.value)
     }
 
     @Test
@@ -96,7 +96,7 @@ class MapTest {
             )
 
         assertTrue(response.status is NotException)
-        assertEquals(2, response.value?.value)
+        assertEquals(2, response.data?.value)
     }
 
 

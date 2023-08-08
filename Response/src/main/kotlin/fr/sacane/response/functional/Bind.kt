@@ -18,8 +18,8 @@ class ResponseBinding<S: Status>{
     lateinit var status: S
     fun <E> Response<E, S>.bind() : E {
         this@ResponseBinding.status = this.status
-        return if(this.status.isSuccess && this.value != null) {
-            this.value.value!!
+        return if(this.status.isSuccess && this.data != null) {
+            this.data.value!!
         } else {
             throw BindingException()
         }
